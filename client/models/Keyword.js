@@ -8,4 +8,7 @@ const KeywordSchema = new mongoose.Schema({
     }
 }, { timestamps: true });
 
-module.exports = mongoose.model("Keyword", KeywordSchema);
+
+const Keyword  = mongoose.model("Keyword", KeywordSchema);
+
+export default Keyword;

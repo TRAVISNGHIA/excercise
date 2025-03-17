@@ -11,5 +11,6 @@ const resultSchema = new mongoose.Schema({
     source: String,
     image: String,
 });
+const Result = mongoose.model("Result", resultSchema);
 
-module.exports = mongoose.model('Results', resultSchema);
+export default Result;
