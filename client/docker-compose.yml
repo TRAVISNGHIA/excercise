@@ -19,6 +19,11 @@ services:
   mongo:
     image: mongo:4.0
     container_name: mongodb
+    environment:
+
+      - MONGO_INITDB_ROOT_USERNAME=nghianh
+      - MONGO_INITDB_ROOT_PASSWORD=6d0yfrpx2tbw7hmz
+
     ports:
       - "27017:27017"
     volumes:
