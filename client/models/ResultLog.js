@@ -30,6 +30,5 @@ const resultLogSchema = new mongoose.Schema({
     }
 }, { timestamps: true });
 
-const ResultLog= mongoose.model('ResultLogs', resultLogSchema);
-
+const ResultLog = mongoose.models.ResultLog || mongoose.model("ResultLog", resultLogSchema);
 export default ResultLog;

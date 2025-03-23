@@ -10,7 +10,7 @@ services:
       - mongo
     environment:
       - NODE_ENV=production
-      - MONGODB_URI=mongodb://nghianh:6d0yfrpx2tbw7hmz@137.184.250.68:27017/sem?authSource=admin
+      - MONGODB_URI=mongodb://nghianh:6d0yfrpx2tbw7hmz@localhost:27017/sem?authSource=admin
     volumes:
       - .:/app
       - /app/node_modules
