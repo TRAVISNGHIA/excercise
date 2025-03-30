@@ -30,18 +30,29 @@ export default function LocationsTable() {
     };
 
     const handleRequest = async (method, payload = {}, id = null) => {
-        let url = API_URL;
-        if (id) url += `/${id}`;
-
         try {
-            console.log(`Sending ${method.toUpperCase()} request to:`, url, payload);
-            await axios({ method, url, data: payload });
-            toast.success(method === "delete" ? "Xóa thành công!" : "Lưu thành công!");
-            fetchData();
+            console.log(`Sending ${method.toUpperCase()} request with:`, { method, payload, id });
+
+            if (method === "put" && id) {
+                // Chính xác URL cho PUT request
+                const url = `${API_URL}/${id}`;
+                console.log("PUT URL:", url);
+                const response = await axios.put(url, payload);
+                console.log("PUT Response:", response.data);
+            } else if (method === "post") {
+                // POST request
+                await axios.post(API_URL, payload);
+            } else {
+                console.error("Invalid method or missing ID for PUT");
+                return toast.error("Lỗi cấu hình request!");
+            }
+
+            toast.success(method === "put" ? "Cập nhật thành công!" : "Thêm mới thành công!");
+            fetchData(); // Refresh data after successful operation
             setIsModalOpen(false);
         } catch (error) {
-            console.error("API Error:", error.response?.data || error.message);
-            toast.error("Lỗi xử lý dữ liệu!");
+            console.error("API Error:", error.response?.data || error);
+            toast.error(`Lỗi xử lý dữ liệu: ${error.response?.data?.error || error.message}`);
         }
     };
 
@@ -51,7 +62,7 @@ export default function LocationsTable() {
         }
 
         if (editingData._id) {
-            // Cập nhật
+            // Cập nhật - gửi đúng ID như một phần của URL
             handleRequest("put", editingData, editingData._id);
         } else {
             // Thêm mới
@@ -59,12 +70,19 @@ export default function LocationsTable() {
         }
     };
 
-    const handleDelete = (selectedRows) => {
-        if (!selectedRows.length) return toast.error("Chọn ít nhất một mục!");
-
-        selectedRows.forEach(async (row) => {
-            await handleRequest("delete", {}, row._id);
-        });
+    const handleDelete = async (selectedRows) => {
+        if (selectedRows.length > 0) {
+            try {
+                await axios.delete(API_URL, {
+                    data: { ids: selectedRows },
+                });
+                toast.success(`Xóa thành công ${selectedRows.length} mục!`);
+                fetchData(); // Cập nhật dữ liệu sau khi xóa
+            } catch (error) {
+                console.error("Delete error:", error.response?.data || error);
+                toast.error("Lỗi khi xóa dữ liệu!");
+            }
+        }
     };
 
     const handleEdit = (rowData) => {
@@ -86,7 +104,7 @@ export default function LocationsTable() {
                         {["encodedId", "address"].map((field) => (
                             <Input
                                 key={field}
-                                placeholder={field}
+                                placeholder={field === "encodedId" ? "Mã định danh" : "Địa chỉ"}
                                 value={editingData?.[field] || ""}
                                 onChange={(e) => setEditingData({ ...editingData, [field]: e.target.value })}
                             />
@@ -107,7 +125,7 @@ export default function LocationsTable() {
                     },
                 ]}
                 data={data}
-                onDelete={handleDelete}
+                onDelete={handleDelete} // Pass handleDelete to DataTable
             />
         </div>
     );

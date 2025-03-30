@@ -21,7 +21,6 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
-import axios from "axios";
 import { toast } from "react-hot-toast";
 
 interface Location {
@@ -36,13 +35,12 @@ interface DataTableProps<TData, TValue> {
     onDelete?: (selectedRows: string[]) => void;
     onEdit?: (selectedRow: any) => void;
 }
-
 export function DataTable<TData, TValue>({
                                              columns,
                                              data,
                                              onDelete,
                                              onEdit,
-                                         }: DataTableProps<TData, TValue>) {
+                                         }: DataTableProps<TData, TValue>)  {
     const [sorting, setSorting] = React.useState<SortingState>([]);
     const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
     const [rowSelection, setRowSelection] = React.useState({});
@@ -66,19 +64,15 @@ export function DataTable<TData, TValue>({
 
     const handleDelete = async () => {
         const selectedRows = table.getSelectedRowModel().rows.map((row) => (row.original as any)._id);
-        if (selectedRows.length > 0) {
-            try {
-                await axios.delete("http://localhost:3000/api/locations", {
-                    data: { ids: selectedRows },
-                });
-                toast.success("Xóa thành công!");
-                if (onDelete) onDelete(selectedRows);
-            } catch (error) {
-                toast.error("Lỗi khi xóa dữ liệu!");
-            }
+        if (selectedRows.length === 0) {
+            toast.error("Vui lòng chọn ít nhất một dòng để xóa");
+            return;
         }
-    };
 
+        if (onDelete) {
+            onDelete(selectedRows);
+        }
+    }
 
     return (
         <div className="p-4 bg-white rounded-lg shadow">
@@ -99,7 +93,7 @@ export function DataTable<TData, TValue>({
                 </div>
                 {table.getSelectedRowModel().rows.length > 0 && (
                     <Button variant="destructive" onClick={handleDelete}>
-                        Xóa đã chọn
+                        Xóa {table.getSelectedRowModel().rows.length} dòng đã chọn
                     </Button>
                 )}
             </div>
@@ -143,14 +137,24 @@ export function DataTable<TData, TValue>({
                 </Table>
             </div>
             <div className="flex items-center justify-end space-x-2 py-4">
-                <Button
-                    variant="destructive"
-                    size="sm"
-                    onClick={handleDelete}
-                    disabled={table.getSelectedRowModel().rows.length === 0}
-                >
-                    Xóa
-                </Button>
+                <div className="space-x-2">
+                    <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => table.previousPage()}
+                        disabled={!table.getCanPreviousPage()}
+                    >
+                        Trước
+                    </Button>
+                    <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => table.nextPage()}
+                        disabled={!table.getCanNextPage()}
+                    >
+                        Sau
+                    </Button>
+                </div>
             </div>
         </div>
     );
