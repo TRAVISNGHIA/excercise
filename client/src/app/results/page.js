@@ -1,6 +1,6 @@
 "use client";
 
-import ResultsTable from "../../component/ResultsTable";
+import ResultsTable from "../component/ResultsTable.js";
 
 export default function ResultsPage() {
     return (
@@ -10,4 +10,3 @@ export default function ResultsPage() {
         </div>
     );
 }
-

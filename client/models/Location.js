@@ -1,23 +1,8 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
 const LocationSchema = new mongoose.Schema({
-    encodedId: {
-        type: String,
-        required: true,
-        unique: true },
-    name: {
-        type: String,
-        required: true
-    },
-    city: String,
-    province: String,
-    country: {
-        type: String,
-        default: "Vietnam"
-    }
-}, { timestamps: true });
+    encodedId: String,
+    address: String,
+});
 
-
-const Location = mongoose.model("Location", LocationSchema);
-
-export default Location;
+export default mongoose.models.Location || mongoose.model("Location", LocationSchema);

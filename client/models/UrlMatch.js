@@ -4,6 +4,6 @@ const urlSchema = new mongoose.Schema({
     url: String,
 });
 
-const urlMatch= mongoose.model('url', urlSchema);
+const UrlMatch = mongoose.models.UrlMatch || mongoose.model('UrlMatch', urlSchema);
 
-export default urlMatch
+export default UrlMatch;

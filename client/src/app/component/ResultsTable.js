@@ -5,8 +5,7 @@ import { useReactTable, getCoreRowModel } from "@tanstack/react-table";
 import axios from "axios";
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
-import styles from "../src/app/style.css"
-
+import "../style.css"
 
 dayjs.extend(customParseFormat);
 
@@ -19,15 +18,18 @@ const ResultsTable = () => {
     const [locationFilter, setLocationFilter] = useState("");
     const [newData, setNewData] = useState({ timestamp: "", campaignName: "", location: "", url: "", source: "", image: "" });
     const [showModal, setShowModal] = useState(false);
-    const [editData, setEditData] = useState(null);
 
     useEffect(() => {
         fetchData();
     }, []);
+    useEffect(() => {
+        console.log("Filtered Data:", filteredData);
+    }, [filteredData]);
 
     const fetchData = () => {
         axios.get("http://localhost:3000/api/results")
             .then((response) => {
+                console.log('anhndt', response.data);
                 setData(response.data);
                 setFilteredData(response.data);
             })
@@ -166,9 +168,10 @@ const ResultsTable = () => {
                 </tr>
                 </thead>
                 <tbody>
-                {filteredData.map((row) => (
-                    <tr key={row._id} className={selectedRows.has(row._id) ? "bg-gray-200" : ""}>
-                        <td className="border p-2 text-center">
+                {filteredData.length > 0 ? (
+                    filteredData.map((row) => (
+                        <tr key={row._id} className={selectedRows.has(row._id) ? "bg-gray-200" : ""}>
+                            <td className="border p-2 text-center">
                             <input
                                 type="checkbox"
                                 checked={selectedRows.has(row._id)}
@@ -180,13 +183,11 @@ const ResultsTable = () => {
                         <td className="border p-2">{row.location}</td>
                         <td className="border p-2">{row.url}</td>
                         <td className="border p-2">{row.source}</td>
-                        <td className="border p-2"><img src={row.image} alt="Ad" width={50} /></td>
+                        <td className="border p-2"><img src={row.image} alt="Ad" width={50} />
+                        </td>
                     </tr>
-                ))}
-                {table.getRowModel().rows.map((row) => (
-                    <tr key={row.id}>
-                    </tr>
-                ))}
+                    ))
+                    ) : null}
                 </tbody>
             </table>
         </div>

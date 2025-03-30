@@ -38,18 +38,18 @@ export default function Home() {
           </a>
           <a
             className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="http://localhost:3000/api/resultLogs"
+            href="http://localhost:3000/resultLogs"
             target="_blank"
             rel="noopener noreferrer"
           >
-            data resultLogs
+            data logs
           </a>
         </div>
       </main>
       <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
         <a
           className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="http://localhost:3000/api/keywords"
+          href="http://localhost:3000/keywords"
           target="_blank"
           rel="noopener noreferrer"
         >
@@ -64,7 +64,7 @@ export default function Home() {
         </a>
         <a
           className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="http://localhost:3000/api/urlMatchs"
+          href="http://localhost:3000/urlMatchs"
           target="_blank"
           rel="noopener noreferrer"
         >
@@ -79,7 +79,7 @@ export default function Home() {
         </a>
         <a
           className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://localhost:3000/api/locations"
+          href="http://localhost:3000/locations"
           target="_blank"
           rel="noopener noreferrer"
         >

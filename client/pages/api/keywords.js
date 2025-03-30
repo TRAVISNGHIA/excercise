@@ -1,8 +1,9 @@
-import db from '../../../models/db.js';
-import Keyword from '../../../models/Keyword.js';
+import Keyword from '../../models/Keyword.js';
+import dbConnect from "../../db.js";
 
 export default async function handler(req, res) {
-    await db;
+    await dbConnect();
+
     if (req.method === 'GET') {
         res.json(await Keyword.find({}));
     } else if (req.method === 'POST') {
