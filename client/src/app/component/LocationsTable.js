@@ -34,13 +34,11 @@ export default function LocationsTable() {
             console.log(`Sending ${method.toUpperCase()} request with:`, { method, payload, id });
 
             if (method === "put" && id) {
-                // Chính xác URL cho PUT request
                 const url = `${API_URL}/${id}`;
                 console.log("PUT URL:", url);
                 const response = await axios.put(url, payload);
                 console.log("PUT Response:", response.data);
             } else if (method === "post") {
-                // POST request
                 await axios.post(API_URL, payload);
             } else {
                 console.error("Invalid method or missing ID for PUT");

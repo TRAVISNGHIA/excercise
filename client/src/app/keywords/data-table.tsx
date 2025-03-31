@@ -21,13 +21,8 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
+import axios from "axios";
 import { toast } from "react-hot-toast";
-
-interface Location {
-    _id: string;
-    encodedId: string;
-    address: string;
-}
 
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[];
@@ -35,12 +30,13 @@ interface DataTableProps<TData, TValue> {
     onDelete?: (selectedRows: string[]) => void;
     onEdit?: (selectedRow: any) => void;
 }
+
 export function DataTable<TData, TValue>({
                                              columns,
                                              data,
                                              onDelete,
                                              onEdit,
-                                         }: DataTableProps<TData, TValue>)  {
+                                         }: DataTableProps<TData, TValue>) {
     const [sorting, setSorting] = React.useState<SortingState>([]);
     const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
     const [rowSelection, setRowSelection] = React.useState({});
@@ -64,36 +60,33 @@ export function DataTable<TData, TValue>({
 
     const handleDelete = async () => {
         const selectedRows = table.getSelectedRowModel().rows.map((row) => (row.original as any)._id);
-        if (selectedRows.length === 0) {
-            toast.error("Vui lòng chọn ít nhất một dòng để xóa");
-            return;
+        if (selectedRows.length > 0) {
+            try {
+                await axios.delete("http://localhost:3000/api/keywords", {
+                    data: { ids: selectedRows },
+                });
+                toast.success("Xóa thành công!");
+                if (onDelete) onDelete(selectedRows);
+            } catch (error) {
+                toast.error("Lỗi khi xóa dữ liệu!");
+            }
         }
-
-        if (onDelete) {
-            onDelete(selectedRows);
-        }
-    }
+    };
 
     return (
         <div className="p-4 bg-white rounded-lg shadow">
             <div className="flex items-center justify-between py-4 gap-4">
                 <div className="flex gap-2">
                     <Input
-                        placeholder="Lọc theo ID mã hóa..."
-                        value={(table.getColumn("encodedId")?.getFilterValue() as string) ?? ""}
-                        onChange={(event) => table.getColumn("encodedId")?.setFilterValue(event.target.value)}
-                        className="max-w-xs"
-                    />
-                    <Input
-                        placeholder="Lọc theo địa chỉ..."
-                        value={(table.getColumn("address")?.getFilterValue() as string) ?? ""}
-                        onChange={(event) => table.getColumn("address")?.setFilterValue(event.target.value)}
+                        placeholder="Lọc theo từ khóa..."
+                        value={(table.getColumn("key")?.getFilterValue() as string) ?? ""}
+                        onChange={(event) => table.getColumn("key")?.setFilterValue(event.target.value)}
                         className="max-w-xs"
                     />
                 </div>
                 {table.getSelectedRowModel().rows.length > 0 && (
                     <Button variant="destructive" onClick={handleDelete}>
-                        Xóa {table.getSelectedRowModel().rows.length} dòng đã chọn
+                        Xóa đã chọn
                     </Button>
                 )}
             </div>
@@ -103,7 +96,7 @@ export function DataTable<TData, TValue>({
                         {table.getHeaderGroups().map((headerGroup) => (
                             <TableRow key={headerGroup.id}>
                                 {headerGroup.headers.map((header) => (
-                                    <TableHead key={header.id}>
+                                    <TableHead key={header.column.id}>
                                         {header.isPlaceholder
                                             ? null
                                             : flexRender(
@@ -118,7 +111,7 @@ export function DataTable<TData, TValue>({
                     <TableBody>
                         {table.getRowModel().rows?.length ? (
                             table.getRowModel().rows.map((row) => (
-                                <TableRow key={row.id} data-state={row.getIsSelected() && "selected"}>
+                                <TableRow key={(row.original as any)._id} data-state={row.getIsSelected() && "selected"}>
                                     {row.getVisibleCells().map((cell) => (
                                         <TableCell key={cell.id}>
                                             {flexRender(cell.column.columnDef.cell, cell.getContext())}
@@ -137,16 +130,14 @@ export function DataTable<TData, TValue>({
                 </Table>
             </div>
             <div className="flex items-center justify-end space-x-2 py-4">
-                <div className="space-x-2">
-                    <Button
-                        variant="destructive"
-                        size="sm"
-                        onClick={handleDelete}
-                        disabled={table.getSelectedRowModel().rows.length === 0}
-                    >
-                        Xóa
-                    </Button>
-                </div>
+                <Button
+                    variant="destructive"
+                    size="sm"
+                    onClick={handleDelete}
+                    disabled={table.getSelectedRowModel().rows.length === 0}
+                >
+                    Xóa
+                </Button>
             </div>
         </div>
     );

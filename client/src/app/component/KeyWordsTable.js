@@ -3,59 +3,60 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { Button } from "@/components/ui/button";
-import { DataTable } from "@/app/locations/data-table";
-import { columns } from "@/app/locations/columns";
+import { columns } from "@/app/keywords/columns";
+import { DataTable } from "@/app/keywords/data-table";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 
-export default function UrlMatchTable() {
+export default function KeywordsTable() {
     const [data, setData] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [editingData, setEditingData] = useState({ url: "" });
-    const API_URL = "http://localhost:3000/api/urlMatchs";  // Sửa lại URL
+    const [editingData, setEditingData] = useState({});
+    const API_URL = "http://localhost:3000/api/keywords";
 
     useEffect(() => { fetchData(); }, []);
 
     const fetchData = async () => {
         try {
             const res = await axios.get(API_URL);
-            setData(res.data.data || []);
-        } catch (error) {
-            console.error("Lỗi khi tải dữ liệu:", error);
+            setData(res.data);
+        } catch {
             toast.error("Lỗi khi tải dữ liệu!");
         }
     };
 
     const handleRequest = async (method, payload = {}, id = null) => {
         let url = API_URL;
-        if (id) url += `?id=${id}`;
-
+        if (method === "put" && id) {
+            url += `?id=${id}`;
+        }
         try {
             await axios({ method, url, data: payload });
             toast.success(method === "delete" ? "Xóa thành công!" : "Lưu thành công!");
             fetchData();
             setIsModalOpen(false);
-        } catch (error) {
-            console.error("Lỗi xử lý dữ liệu:", error);
+        } catch {
             toast.error("Lỗi xử lý dữ liệu!");
         }
     };
 
     const handleSave = () => {
-        if (!editingData.url) {
-            return toast.error("Vui lòng nhập URL!");
+        if (!editingData.key) {
+            return toast.error("Vui lòng nhập từ khóa!");
         }
         if (editingData._id) {
-            handleRequest("put", { url: editingData.url }, editingData._id);
+            const id = editingData._id;
+            const updatedData = { ...editingData };
+            delete updatedData._id;
+            handleRequest("put", updatedData, id);
         } else {
-            handleRequest("post", { url: editingData.url });
+            handleRequest("post", editingData);
         }
     };
-
     const handleDelete = (selectedRows) => {
         if (!selectedRows.length) return toast.error("Chọn ít nhất một mục!");
-        selectedRows.forEach(row => handleRequest("delete", {}, row._id));
+        handleRequest("delete", { ids: selectedRows.map(row => row._id) });
     };
 
     return (
@@ -63,24 +64,25 @@ export default function UrlMatchTable() {
             <div className="flex justify-between mb-4">
                 <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
                     <DialogTrigger asChild>
-                        <Button onClick={() => { setEditingData({ url: "" }); setIsModalOpen(true); }}>Thêm mới</Button>
+                        <Button onClick={() => { setEditingData({}); setIsModalOpen(true); }}>Thêm mới</Button>
                     </DialogTrigger>
                     <DialogContent>
                         <DialogHeader>
                             <DialogTitle>{editingData?._id ? "Chỉnh sửa" : "Thêm mới"}</DialogTitle>
                         </DialogHeader>
-                        <Input
-                            placeholder="URL"
-                            value={editingData.url}
-                            onChange={(e) => setEditingData({ ...editingData, url: e.target.value })}
-                        />
+                        <Input placeholder="key" value={editingData?.key || ""}
+                               onChange={(e) => setEditingData({ ...editingData, key: e.target.value })} />
                         <Button onClick={handleSave}>Lưu</Button>
                     </DialogContent>
                 </Dialog>
             </div>
 
             <DataTable
-                columns={columns}
+                columns={[
+                    ...columns,
+                    { id: "actions", header: "Hành động",
+                        cell: ({ row }) => <Button size="sm" onClick={() => { setEditingData(row.original); setIsModalOpen(true); }}>Sửa</Button> }
+                ]}
                 data={data}
                 onDelete={handleDelete}
             />

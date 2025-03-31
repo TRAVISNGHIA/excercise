@@ -1,0 +1,12 @@
+"use client";
+
+import KeywordsTable from "../../app/component/KeyWordsTable";
+
+export default function KeywordsPage() {
+    return (
+        <div className="container mx-auto p-4">
+            <h1 className="text-2xl font-bold mb-4">Bảng Từ Khóa</h1>
+            <KeywordsTable/>
+        </div>
+    );
+}

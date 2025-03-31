@@ -41,7 +41,6 @@ export default async function handler(req, res) {
         try {
             if (!id) return res.status(400).json({ error: "Thiếu ID" });
 
-            // Loại bỏ _id từ dữ liệu cập nhật nếu có
             const updateData = { ...req.body };
             if (updateData._id) delete updateData._id;
 
@@ -67,7 +66,6 @@ export default async function handler(req, res) {
                 return res.status(400).json({ error: "Thiếu danh sách ID để xóa" });
             }
 
-            // Loại bỏ các ID trùng lặp
             const uniqueIds = [...new Set(ids)];
 
             const result = await Location.deleteMany({ _id: { $in: uniqueIds } });
