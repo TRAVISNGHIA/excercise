@@ -81,6 +81,11 @@ export default function KeywordsTable() {
                     </DialogContent>
                 </Dialog>
             </div>
+            <div id="toggle-container">
+                <div id="one"></div>
+                <div id="two"></div>
+                <div id="three"></div>
+            </div>
 
             <DataTable
                 columns={[
