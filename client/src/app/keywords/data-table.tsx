@@ -27,10 +27,9 @@ import { toast } from "react-hot-toast";
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[];
     data: TData[];
-    onDelete?: (selectedRows: string[]) => void;
+    onDelete?: (selectedRows: TData[]) => void;
     onEdit?: (selectedRow: any) => void;
 }
-
 export function DataTable<TData, TValue>({
                                              columns,
                                              data,
@@ -59,17 +58,12 @@ export function DataTable<TData, TValue>({
     });
 
     const handleDelete = async () => {
-        const selectedRows = table.getSelectedRowModel().rows.map((row) => (row.original as any)._id);
-        if (selectedRows.length > 0) {
-            try {
-                await axios.delete("http://localhost:3000/api/keywords", {
-                    data: { ids: selectedRows },
-                });
-                toast.success("Xóa thành công!");
-                if (onDelete) onDelete(selectedRows);
-            } catch (error) {
-                toast.error("Lỗi khi xóa dữ liệu!");
-            }
+        const selectedRows = table.getSelectedRowModel().rows.map((row) => row.original as any);
+        console.log("Selected rows to delete:", selectedRows); // Debugging
+        if (selectedRows.length > 0 && onDelete) {
+            onDelete(selectedRows);
+        } else {
+            console.warn("No rows selected or onDelete not provided");
         }
     };
 
@@ -128,16 +122,6 @@ export function DataTable<TData, TValue>({
                         )}
                     </TableBody>
                 </Table>
-            </div>
-            <div className="flex items-center justify-end space-x-2 py-4">
-                <Button
-                    variant="destructive"
-                    size="sm"
-                    onClick={handleDelete}
-                    disabled={table.getSelectedRowModel().rows.length === 0}
-                >
-                    Xóa
-                </Button>
             </div>
         </div>
     );

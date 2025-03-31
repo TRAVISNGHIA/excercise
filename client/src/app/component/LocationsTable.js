@@ -34,7 +34,7 @@ export default function LocationsTable() {
             console.log(`Sending ${method.toUpperCase()} request with:`, { method, payload, id });
 
             if (method === "put" && id) {
-                const url = `${API_URL}/${id}`;
+                const url = `${API_URL}?id=${id}`;
                 console.log("PUT URL:", url);
                 const response = await axios.put(url, payload);
                 console.log("PUT Response:", response.data);
@@ -60,10 +60,9 @@ export default function LocationsTable() {
         }
 
         if (editingData._id) {
-            // Cập nhật - gửi đúng ID như một phần của URL
             handleRequest("put", editingData, editingData._id);
         } else {
-            // Thêm mới
+
             handleRequest("post", editingData);
         }
     };
@@ -75,7 +74,7 @@ export default function LocationsTable() {
                     data: { ids: selectedRows },
                 });
                 toast.success(`Xóa thành công ${selectedRows.length} mục!`);
-                fetchData(); // Cập nhật dữ liệu sau khi xóa
+                fetchData();
             } catch (error) {
                 console.error("Delete error:", error.response?.data || error);
                 toast.error("Lỗi khi xóa dữ liệu!");
@@ -115,15 +114,11 @@ export default function LocationsTable() {
             <DataTable
                 columns={[
                     ...columns,
-                    {
-                        id: "actions",
-                        cell: ({ row }) => (
-                            <Button size="sm" onClick={() => handleEdit(row.original)}>Sửa</Button>
-                        ),
-                    },
+                    { id: "actions",
+                        cell: ({ row }) => <Button size="sm" onClick={() => { setEditingData(row.original); setIsModalOpen(true); }}>Sửa</Button> }
                 ]}
                 data={data}
-                onDelete={handleDelete} // Pass handleDelete to DataTable
+                onDelete={handleDelete}
             />
         </div>
     );

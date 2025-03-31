@@ -26,20 +26,7 @@ export default function KeywordsTable() {
         }
     };
 
-    const handleRequest = async (method, payload = {}, id = null) => {
-        let url = API_URL;
-        if (method === "put" && id) {
-            url += `?id=${id}`;
-        }
-        try {
-            await axios({ method, url, data: payload });
-            toast.success(method === "delete" ? "Xóa thành công!" : "Lưu thành công!");
-            fetchData();
-            setIsModalOpen(false);
-        } catch {
-            toast.error("Lỗi xử lý dữ liệu!");
-        }
-    };
+
 
     const handleSave = () => {
         if (!editingData.key) {
@@ -54,9 +41,27 @@ export default function KeywordsTable() {
             handleRequest("post", editingData);
         }
     };
-    const handleDelete = (selectedRows) => {
+    const handleDelete = async (selectedRows) => {
         if (!selectedRows.length) return toast.error("Chọn ít nhất một mục!");
-        handleRequest("delete", { ids: selectedRows.map(row => row._id) });
+        const ids = selectedRows.map(row => row._id);
+        console.log("IDs to delete:", ids);
+        try {
+            await handleRequest("delete", { ids: ids });
+        } catch (error) {}
+    };
+    const handleRequest = async (method, payload = {}, id = null) => {
+        let url = API_URL;
+        if (method === "put" && id) {
+            url += `?id=${id}`;
+        }
+        try {
+            await axios({ method, url, data: payload });
+            toast.success(method === "delete" ? "Xóa thành công!" : "Lưu thành công!");
+            fetchData();
+            setIsModalOpen(false);
+        } catch {
+            toast.error("Lỗi xử lý dữ liệu!");
+        }
     };
 
     return (
@@ -80,7 +85,7 @@ export default function KeywordsTable() {
             <DataTable
                 columns={[
                     ...columns,
-                    { id: "actions", header: "Hành động",
+                    { id: "actions",
                         cell: ({ row }) => <Button size="sm" onClick={() => { setEditingData(row.original); setIsModalOpen(true); }}>Sửa</Button> }
                 ]}
                 data={data}

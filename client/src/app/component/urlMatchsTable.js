@@ -3,8 +3,8 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { Button } from "@/components/ui/button";
-import { DataTable } from "@/app/locations/data-table";
-import { columns } from "@/app/locations/columns";
+import { DataTable } from "@/app/urlMatchs/data-table";
+import { columns } from "@/app/urlMatchs/columns";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
@@ -13,14 +13,15 @@ export default function UrlMatchTable() {
     const [data, setData] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [editingData, setEditingData] = useState({ url: "" });
-    const API_URL = "http://localhost:3000/api/urlMatchs";  // Sửa lại URL
+    const API_URL = "http://localhost:3000/api/urlMatchs";
 
     useEffect(() => { fetchData(); }, []);
 
     const fetchData = async () => {
         try {
             const res = await axios.get(API_URL);
-            setData(res.data.data || []);
+            // Sửa chỗ này: Kiểm tra cấu trúc phản hồi và đặt dữ liệu đúng cách
+            setData(Array.isArray(res.data) ? res.data : (res.data.data || []));
         } catch (error) {
             console.error("Lỗi khi tải dữ liệu:", error);
             toast.error("Lỗi khi tải dữ liệu!");
@@ -55,7 +56,14 @@ export default function UrlMatchTable() {
 
     const handleDelete = (selectedRows) => {
         if (!selectedRows.length) return toast.error("Chọn ít nhất một mục!");
-        selectedRows.forEach(row => handleRequest("delete", {}, row._id));
+        Promise.all(selectedRows.map(id => handleRequest("delete", {}, id)))
+            .then(() => fetchData());
+    };
+
+    // Thêm hàm xử lý sự kiện chỉnh sửa
+    const handleEdit = (row) => {
+        setEditingData({ _id: row._id, url: row.url });
+        setIsModalOpen(true);
     };
 
     return (
@@ -80,7 +88,11 @@ export default function UrlMatchTable() {
             </div>
 
             <DataTable
-                columns={columns}
+                columns={[
+                    ...columns,
+                    { id: "actions",
+                        cell: ({ row }) => <Button size="sm" onClick={() => { setEditingData(row.original); setIsModalOpen(true); }}>Sửa</Button> }
+                ]}
                 data={data}
                 onDelete={handleDelete}
             />

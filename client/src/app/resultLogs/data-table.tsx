@@ -141,17 +141,6 @@ export function DataTable<TData, TValue>({
                     </TableBody>
                 </Table>
             </div>
-            <div className="flex items-center justify-end space-x-2 py-4">
-                <Button
-                    variant="destructive"
-                    size="sm"
-                    onClick={handleDelete}
-                    disabled={table.getSelectedRowModel().rows.length === 0}
-                >
-                    Xóa
-                </Button>
-
-            </div>
         </div>
     );
 }

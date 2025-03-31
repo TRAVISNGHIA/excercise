@@ -82,7 +82,7 @@ export default function ResultLogsTable() {
             <DataTable
                 columns={[
                     ...columns,
-                    { id: "actions", header: "Hành động",
+                    { id: "actions",
                         cell: ({ row }) => <Button size="sm" onClick={() => { setEditingData(row.original); setIsModalOpen(true); }}>Sửa</Button> }
                 ]}
                 data={data}
