@@ -69,7 +69,7 @@ export function DataTable<TData, TValue>({
         const selectedRows = table.getSelectedRowModel().rows.map((row) => (row.original as any)._id);
         if (selectedRows.length > 0) {
             try {
-                await axios.delete("http://localhost:3000/api/resultLogs", {
+                await axios.delete("http://localhost:3000/api/results", {
                     data: { ids: selectedRows },
                 });
                 toast.success("Xóa thành công!");
@@ -104,12 +104,13 @@ export function DataTable<TData, TValue>({
                     </NavigationMenuItem>
                 </NavigationMenuList>
             </NavigationMenu>
+
             <div className="flex items-center justify-between py-4 gap-4">
                 <div className="flex gap-2">
                     <Input
-                        placeholder="Lọc theo thương hiệu..."
-                        value={(table.getColumn("brand")?.getFilterValue() as string) ?? ""}
-                        onChange={(event) => table.getColumn("brand")?.setFilterValue(event.target.value)}
+                        placeholder="Lọc theo CampaignName..."
+                        value={(table.getColumn("campaignName")?.getFilterValue() as string) ?? ""}
+                        onChange={(event) => table.getColumn("campaignName")?.setFilterValue(event.target.value)}
                         className="max-w-xs"
                     />
                     <Input

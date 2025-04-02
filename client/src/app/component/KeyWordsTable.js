@@ -8,6 +8,7 @@ import { DataTable } from "@/app/keywords/data-table";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
+import { exportToCSV } from "../../../utils/exportUtils";
 
 export default function KeywordsTable() {
     const [data, setData] = useState([]);
@@ -25,8 +26,6 @@ export default function KeywordsTable() {
             toast.error("Lỗi khi tải dữ liệu!");
         }
     };
-
-
 
     const handleSave = () => {
         if (!editingData.key) {
@@ -81,12 +80,11 @@ export default function KeywordsTable() {
                     </DialogContent>
                 </Dialog>
             </div>
-            <div id="toggle-container">
-                <div id="one"></div>
-                <div id="two"></div>
-                <div id="three"></div>
+            <div className="flex gap-2 mb-4">
+                <button onClick={() => exportToCSV(data)} className="bg-black text-white px-4 py-1 rounded">
+                    Xuất CSV
+                </button>
             </div>
-
             <DataTable
                 columns={[
                     ...columns,

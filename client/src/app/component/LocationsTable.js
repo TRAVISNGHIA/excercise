@@ -8,6 +8,7 @@ import { columns } from "@/app/locations/columns";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
+import { exportToCSV } from "../../../utils/exportUtils";
 
 export default function LocationsTable() {
     const [data, setData] = useState([]);
@@ -30,27 +31,18 @@ export default function LocationsTable() {
     };
 
     const handleRequest = async (method, payload = {}, id = null) => {
+        let url = API_URL;
+        if (id) url += `/${id}`;
+
         try {
-            console.log(`Sending ${method.toUpperCase()} request with:`, { method, payload, id });
-
-            if (method === "put" && id) {
-                const url = `${API_URL}?id=${id}`;
-                console.log("PUT URL:", url);
-                const response = await axios.put(url, payload);
-                console.log("PUT Response:", response.data);
-            } else if (method === "post") {
-                await axios.post(API_URL, payload);
-            } else {
-                console.error("Invalid method or missing ID for PUT");
-                return toast.error("Lỗi cấu hình request!");
-            }
-
-            toast.success(method === "put" ? "Cập nhật thành công!" : "Thêm mới thành công!");
-            fetchData(); // Refresh data after successful operation
+            console.log(`Sending ${method.toUpperCase()} request to:`, url, payload);
+            await axios({ method, url, data: payload });
+            toast.success(method === "delete" ? "Xóa thành công!" : "Lưu thành công!");
+            fetchData();
             setIsModalOpen(false);
         } catch (error) {
-            console.error("API Error:", error.response?.data || error);
-            toast.error(`Lỗi xử lý dữ liệu: ${error.response?.data?.error || error.message}`);
+            console.error("API Error:", error.response?.data || error.message);
+            toast.error("Lỗi xử lý dữ liệu!");
         }
     };
 
@@ -62,25 +54,25 @@ export default function LocationsTable() {
         if (editingData._id) {
             handleRequest("put", editingData, editingData._id);
         } else {
-
             handleRequest("post", editingData);
         }
     };
 
-    const handleDelete = async (selectedRows) => {
+    const handleDelete = async () => {
+        const selectedRows = table.getSelectedRowModel().rows.map((row) => row.original._id);
         if (selectedRows.length > 0) {
             try {
-                await axios.delete(API_URL, {
+                await axios.delete("http://localhost:3000/api/locations", {
                     data: { ids: selectedRows },
                 });
                 toast.success(`Xóa thành công ${selectedRows.length} mục!`);
-                fetchData();
+                if (onDelete) onDelete(selectedRows);
             } catch (error) {
-                console.error("Delete error:", error.response?.data || error);
                 toast.error("Lỗi khi xóa dữ liệu!");
             }
         }
     };
+
 
     const handleEdit = (rowData) => {
         setEditingData(rowData);
@@ -101,7 +93,7 @@ export default function LocationsTable() {
                         {["encodedId", "address"].map((field) => (
                             <Input
                                 key={field}
-                                placeholder={field === "encodedId" ? "Mã định danh" : "Địa chỉ"}
+                                placeholder={field}
                                 value={editingData?.[field] || ""}
                                 onChange={(e) => setEditingData({ ...editingData, [field]: e.target.value })}
                             />
@@ -110,12 +102,21 @@ export default function LocationsTable() {
                     </DialogContent>
                 </Dialog>
             </div>
+            <div className="flex gap-2 mb-4">
+                <button onClick={() => exportToCSV(data)} className="bg-black text-white px-4 py-1 rounded">
+                    Xuất CSV
+                </button>
+            </div>
 
             <DataTable
                 columns={[
                     ...columns,
-                    { id: "actions",
-                        cell: ({ row }) => <Button size="sm" onClick={() => { setEditingData(row.original); setIsModalOpen(true); }}>Sửa</Button> }
+                    {
+                        id: "actions",
+                        cell: ({ row }) => (
+                            <Button size="sm" onClick={() => handleEdit(row.original)}>Sửa</Button>
+                        ),
+                    },
                 ]}
                 data={data}
                 onDelete={handleDelete}

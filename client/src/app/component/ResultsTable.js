@@ -1,197 +1,97 @@
 "use client";
 
-import { useEffect, useState, useMemo } from "react";
-import { useReactTable, getCoreRowModel } from "@tanstack/react-table";
+import { useState, useEffect } from "react";
 import axios from "axios";
-import dayjs from "dayjs";
-import customParseFormat from "dayjs/plugin/customParseFormat";
-import "../style.css"
+import { Button } from "@/components/ui/button";
+import { DataTable } from "@/app/results/data-table";
+import { columns } from "@/app/results/columns";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { toast } from "sonner";
+import { exportToCSV } from "../../../utils/exportUtils";
 
-dayjs.extend(customParseFormat);
-
-const ResultsTable = () => {
+export default function ResultLogsTable() {
     const [data, setData] = useState([]);
-    const [filteredData, setFilteredData] = useState([]);
-    const [selectedRows, setSelectedRows] = useState(new Set()); // Lưu id các hàng đã chọn
-    const [datetimeFilter, setDatetimeFilter] = useState("");
-    const [campaignFilter, setCampaignFilter] = useState("");
-    const [locationFilter, setLocationFilter] = useState("");
-    const [newData, setNewData] = useState({ timestamp: "", campaignName: "", location: "", url: "", source: "", image: "" });
-    const [showModal, setShowModal] = useState(false);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [editingData, setEditingData] = useState({});
+    const [selectedRows, setSelectedRows] = useState([]);
+    const API_URL = "http://localhost:3000/api/results";
 
-    useEffect(() => {
-        fetchData();
-    }, []);
-    useEffect(() => {
-        console.log("Filtered Data:", filteredData);
-    }, [filteredData]);
+    useEffect(() => { fetchData(); }, []);
 
-    const fetchData = () => {
-        axios.get("http://localhost:3000/api/results")
-            .then((response) => {
-                console.log('anhndt', response.data);
-                setData(response.data);
-                setFilteredData(response.data);
-            })
-            .catch((error) => console.error("Error fetching results:", error));
+    const fetchData = async () => {
+        try {
+            const res = await axios.get(API_URL);
+            setData(res.data);
+        } catch {
+            toast.error("Lỗi khi tải dữ liệu!");
+        }
     };
 
-    const handleFilter = () => {
-        const filtered = data.filter((item) => {
-            const itemDate = dayjs(item.timestamp, "DD-MM-YYYY hh:mm:ss A").format("DD-MM-YYYY hh:mm:ss A");
-            const dateMatches = datetimeFilter ? itemDate.includes(datetimeFilter) : true;
-            const campaignMatches = campaignFilter ? item.campaignName?.toLowerCase().includes(campaignFilter.toLowerCase()) : true;
-            const locationMatches = locationFilter ? item.location?.toLowerCase().includes(locationFilter.toLowerCase()) : true;
-            return dateMatches && campaignMatches && locationMatches;
-        });
-        setFilteredData(filtered);
+    const handleRequest = async (method, payload = {}, id = null) => {
+        let url = API_URL;
+        if (method === "put" && id) {
+            url += `/${id}`;
+        }
+        try {
+            await axios({ method, url, data: payload });
+            toast.success(method === "delete" ? "Xóa thành công!" : "Lưu thành công!");
+            fetchData();
+            setIsModalOpen(false);
+        } catch {
+            toast.error("Lỗi xử lý dữ liệu!");
+        }
     };
 
-    const handleAddNew = () => {
-        axios.post("http://localhost:3000/api/results", newData)
-            .then(response => {
-                setData([...data, response.data]);
-                setFilteredData([...filteredData, response.data]);
-                setShowModal(false);
-                setNewData({ timestamp: "", campaignName: "", location: "", url: "", source: "", image: "" });
-            })
-            .catch(error => console.error("Error adding data:", error));
+    const handleSave = () => {
+        if (!editingData.timestamp || !editingData.campaignName || !editingData.location || !editingData.url || !editingData.source) {
+            return toast.error("Vui lòng nhập đầy đủ thông tin!");
+        }
+        if (editingData._id) {
+            const id = editingData._id;
+            const updatedData = { ...editingData };
+            delete updatedData._id;
+            handleRequest("put", updatedData, id);
+        } else {
+            handleRequest("post", editingData);
+        }
     };
-
-    const handleSelectRow = (id) => {
-        setSelectedRows((prev) => {
-            const newSelected = new Set(prev);
-            if (newSelected.has(id)) {
-                newSelected.delete(id);
-            } else {
-                newSelected.add(id);
-            }
-            return newSelected;
-        });
+    const handleDelete = (selectedRows) => {
+        if (!selectedRows.length) return toast.error("Chọn ít nhất một mục!");
+        handleRequest("delete", { ids: selectedRows.map(row => row._id) });
     };
-
-    const handleDeleteSelected = () => {
-        if (selectedRows.size === 0) return;
-
-        const idsToDelete = Array.from(selectedRows);
-        axios
-            .delete("http://localhost:3000/api/results", { data: { ids: idsToDelete } })
-            .then(() => {
-                setData(data.filter((item) => !selectedRows.has(item._id)));
-                setFilteredData(filteredData.filter((item) => !selectedRows.has(item._id)));
-                setSelectedRows(new Set());
-            })
-            .catch((error) => console.error("Error deleting data:", error));
-    };
-    const columns = useMemo(
-        () => [
-            { header: "Datetime", accessorKey: "timestamp" },
-            { header: "Campaign Name", accessorKey: "campaignName" },
-            { header: "Location", accessorKey: "location" },
-            { header: "URL", accessorKey: "url" },
-            { header: "Source", accessorKey: "source" },
-            { header: "Image", accessorKey: "image", cell: ({ getValue }) => <img src={getValue()} alt="Ad" width={50} /> },
-        ],
-        []
-    );
-    const table = useReactTable({
-        data: filteredData,
-        columns,
-        getCoreRowModel: getCoreRowModel(),
-    });
 
     return (
-        <div>
-            <div className="mb-4 flex gap-4 flex-wrap">
-                <input type="text" placeholder="Search Datetime..." value={datetimeFilter} onChange={(e) => setDatetimeFilter(e.target.value)} className="p-2 border rounded" />
-                <input type="text" placeholder="Search Campaign Name..." value={campaignFilter} onChange={(e) => setCampaignFilter(e.target.value)} className="p-2 border rounded" />
-                <input type="text" placeholder="Search Location..." value={locationFilter} onChange={(e) => setLocationFilter(e.target.value)} className="p-2 border rounded" />
-                <button onClick={handleFilter} className="p-2 bg-blue-500 text-white rounded">Filter</button>
-                <button className="p-2 bg-green-500 text-white rounded" onClick={() => setShowModal(true)}>Add New</button>
-                <button
-                    onClick={handleDeleteSelected}
-                    className={`p-2 rounded ${selectedRows.size > 0 ? 'bg-red-500 text-white' : 'bg-gray-300 text-gray-500 cursor-not-allowed'}`}
-                    disabled={selectedRows.size === 0}
-                >
-                    Delete Selected
-                </button>
-            </div>
-
-            {showModal && (
-                <div className="modal-overlay">
-                    <div className="modal-content">
-                        <h2 className="modal-title">Add New Data</h2>
-                        {Object.keys(newData).map((key) => (
-                            <input
-                                key={key}
-                                type="text"
-                                placeholder={key}
-                                value={newData[key]}
-                                onChange={(e) => setNewData({ ...newData, [key]: e.target.value })}
-                                className="input-field"
-                            />
+        <div className="p-4 border rounded-lg">
+            <div className="flex justify-between mb-4">
+                <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
+                    <DialogTrigger asChild>
+                        <Button onClick={() => { setEditingData({}); setIsModalOpen(true); }}>Thêm mới</Button>
+                    </DialogTrigger>
+                    <DialogContent>
+                        <DialogHeader>
+                            <DialogTitle>{editingData?._id ? "Chỉnh sửa" : "Thêm mới"}</DialogTitle>
+                        </DialogHeader>
+                        {["timestamp", "campaignName", "location", "url", "source", "image"].map((field) => (
+                            <Input key={field} placeholder={field} value={editingData?.[field] || ""}
+                                   onChange={(e) => setEditingData({ ...editingData, [field]: e.target.value })} />
                         ))}
-                        <div className="modal-actions">
-                            <button onClick={handleAddNew} className="btn-save">
-                                Save
-                            </button>
-                            <button onClick={() => setShowModal(false)} className="btn-cancel">
-                                Cancel
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            )}
-
-            <table className="w-full border-collapse border border-gray-300">
-                <thead>
-                <tr>
-                    <th className="border p-2 text-center">
-                        <input
-                            type="checkbox"
-                            checked={selectedRows.size === filteredData.length && filteredData.length > 0}
-                            onChange={() => {
-                                if (selectedRows.size === filteredData.length) {
-                                    setSelectedRows(new Set());
-                                } else {
-                                    setSelectedRows(new Set(filteredData.map((row) => row._id)));
-                                }
-                            }}
-                        />
-                    </th>
-                    <th className="border p-2">Datetime</th>
-                    <th className="border p-2">Campaign Name</th>
-                    <th className="border p-2">Location</th>
-                    <th className="border p-2">URL</th>
-                    <th className="border p-2">Source</th>
-                    <th className="border p-2">Image</th>
-                </tr>
-                </thead>
-                <tbody>
-                {filteredData.length > 0 ? (
-                    filteredData.map((row) => (
-                        <tr key={row._id} className={selectedRows.has(row._id) ? "bg-gray-200" : ""}>
-                            <td className="border p-2 text-center">
-                            <input
-                                type="checkbox"
-                                checked={selectedRows.has(row._id)}
-                                onChange={() => handleSelectRow(row._id)}
-                            />
-                        </td>
-                        <td className="border p-2">{row.timestamp}</td>
-                        <td className="border p-2">{row.campaignName}</td>
-                        <td className="border p-2">{row.location}</td>
-                        <td className="border p-2">{row.url}</td>
-                        <td className="border p-2">{row.source}</td>
-                        <td className="border p-2"><img src={row.image} alt="Ad" width={50} />
-                        </td>
-                    </tr>
-                    ))
-                    ) : null}
-                </tbody>
-            </table>
+                        <Button onClick={handleSave}>Lưu</Button>
+                    </DialogContent>
+                </Dialog>
+            </div>
+            <div className="flex gap-2 mb-4">
+                <Button onClick={() => exportToCSV(data)}>Xuất CSV</Button>
+            </div>
+            <DataTable
+                columns={[
+                    ...columns,
+                    { id: "actions",
+                        cell: ({ row }) => <Button size="sm" onClick={() => { setEditingData(row.original); setIsModalOpen(true); }}>Sửa</Button> }
+                ]}
+                data={data}
+                onDelete={handleDelete}
+            />
         </div>
     );
-};
-
-export default ResultsTable;
+}

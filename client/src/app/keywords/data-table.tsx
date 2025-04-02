@@ -11,6 +11,15 @@ import {
     getSortedRowModel,
     useReactTable,
 } from "@tanstack/react-table";
+
+import {
+    NavigationMenu,
+    NavigationMenuItem,
+    NavigationMenuLink,
+    NavigationMenuList,
+} from "@/components/ui/navigation-menu"
+
+
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -21,8 +30,6 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
-import axios from "axios";
-import { toast } from "react-hot-toast";
 
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[];
@@ -69,6 +76,30 @@ export function DataTable<TData, TValue>({
 
     return (
         <div className="p-4 bg-white rounded-lg shadow">
+            <NavigationMenu>
+                <NavigationMenuList>
+                    <NavigationMenuItem>
+                            <NavigationMenuLink href="/">Home</NavigationMenuLink>
+                    </NavigationMenuItem>
+                    <NavigationMenuItem>
+                            <NavigationMenuLink href="/keywords">Keywords</NavigationMenuLink>
+                    </NavigationMenuItem>
+                    <NavigationMenuItem>
+                            <NavigationMenuLink href="/locations">Locations</NavigationMenuLink>
+                    </NavigationMenuItem>
+                    <NavigationMenuItem>
+                            <NavigationMenuLink href="/results">Data Results</NavigationMenuLink>
+                    </NavigationMenuItem>
+                    <NavigationMenuItem>
+                            <NavigationMenuLink href="/resultLogs">Data Logs</NavigationMenuLink>
+                    </NavigationMenuItem>
+                    <NavigationMenuItem>
+                            <NavigationMenuLink href="/urlMatchs">URL Matchs</NavigationMenuLink>
+                    </NavigationMenuItem>
+                </NavigationMenuList>
+            </NavigationMenu>
+
+
             <div className="flex items-center justify-between py-4 gap-4">
                 <div className="flex gap-2">
                     <Input

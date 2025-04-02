@@ -8,6 +8,7 @@ import { columns } from "@/app/urlMatchs/columns";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
+import {exportToCSV} from "../../../utils/exportUtils";
 
 export default function UrlMatchTable() {
     const [data, setData] = useState([]);
@@ -60,7 +61,6 @@ export default function UrlMatchTable() {
             .then(() => fetchData());
     };
 
-    // Thêm hàm xử lý sự kiện chỉnh sửa
     const handleEdit = (row) => {
         setEditingData({ _id: row._id, url: row.url });
         setIsModalOpen(true);
@@ -85,6 +85,11 @@ export default function UrlMatchTable() {
                         <Button onClick={handleSave}>Lưu</Button>
                     </DialogContent>
                 </Dialog>
+            </div>
+            <div className="flex gap-2 mb-4">
+                <button onClick={() => exportToCSV(data)} className="bg-black text-white px-4 py-1 rounded">
+                    Xuất CSV
+                </button>
             </div>
 
             <DataTable
