@@ -13,18 +13,9 @@ export default async function handler(req, res) {
     }
 
     if (req.method === "GET") {
-        try {
-            if (id) {
-                const location = await Location.findById(id);
-                if (!location) return res.status(404).json({ error: "Không tìm thấy dữ liệu" });
-                return res.status(200).json(location);
-            }
-            const locations = await Location.find({});
-            return res.status(200).json(locations);
-        } catch (error) {
-            console.log(error);
-            return res.status(500).json({ error: "Lỗi server khi lấy dữ liệu" });
-        }
+        res.status(200).json({ message: "Thành công!" }); // Gửi phản hồi nhưng KHÔNG return
+    } else {
+        res.status(405).json({ error: "Phương thức không được phép" });
     }
 
     if (req.method === "POST") {
