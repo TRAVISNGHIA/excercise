@@ -22,6 +22,7 @@ export default async function handler(req, res) {
             const locations = await Location.find({});
             return res.status(200).json(locations);
         } catch (error) {
+            console.log(error);
             return res.status(500).json({ error: "Lỗi server khi lấy dữ liệu" });
         }
     }

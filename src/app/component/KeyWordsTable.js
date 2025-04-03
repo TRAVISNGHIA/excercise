@@ -46,7 +46,9 @@ export default function KeywordsTable() {
         console.log("IDs to delete:", ids);
         try {
             await handleRequest("delete", { ids: ids });
-        } catch (error) {}
+        } catch (error) {
+            console.log(error);
+        }
     };
     const handleRequest = async (method, payload = {}, id = null) => {
         let url = API_URL;

@@ -14,7 +14,6 @@ export default function ResultLogsTable() {
     const [data, setData] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [editingData, setEditingData] = useState({});
-    const [selectedRows, setSelectedRows] = useState([]);
     const API_URL = "http://localhost:3000/api/results";
 
     useEffect(() => { fetchData(); }, []);

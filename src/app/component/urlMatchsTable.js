@@ -61,11 +61,6 @@ export default function UrlMatchTable() {
             .then(() => fetchData());
     };
 
-    const handleEdit = (row) => {
-        setEditingData({ _id: row._id, url: row.url });
-        setIsModalOpen(true);
-    };
-
     return (
         <div className="p-4 border rounded-lg">
             <div className="flex justify-between mb-4">

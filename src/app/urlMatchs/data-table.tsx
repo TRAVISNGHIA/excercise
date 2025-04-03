@@ -34,14 +34,13 @@ interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[];
     data: TData[];
     onDelete?: (selectedRows: any[]) => void;
-    onEdit?: (selectedRow: any) => void;
+
 }
 
 export function DataTable<TData, TValue>({
                                              columns,
                                              data,
                                              onDelete,
-                                             onEdit,
                                          }: DataTableProps<TData, TValue>) {
     const [sorting, setSorting] = React.useState<SortingState>([]);
     const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);

@@ -26,6 +26,7 @@ export default async function handler(req, res) {
             return res.status(405).end(`Method ${req.method} Not Allowed`);
         }
     } catch (error) {
+        console.log(error);
         return res.status(500).json({ error: 'Lỗi xử lý dữ liệu' });
     }
 }

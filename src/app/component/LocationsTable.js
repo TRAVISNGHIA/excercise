@@ -68,6 +68,7 @@ export default function LocationsTable() {
                 toast.success(`Xóa thành công ${selectedRows.length} mục!`);
                 if (onDelete) onDelete(selectedRows);
             } catch (error) {
+                console.log(error);
                 toast.error("Lỗi khi xóa dữ liệu!");
             }
         }
