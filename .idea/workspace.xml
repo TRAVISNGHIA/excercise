@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="8eeab5f4-dc4c-4a69-b28a-31bc76bdaa65" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/eslint.config.mjs" beforeDir="false" afterPath="$PROJECT_DIR$/eslint.config.mjs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/.package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/.package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/api/keywords.js" beforeDir="false" afterPath="$PROJECT_DIR$/pages/api/keywords.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/api/locations.js" beforeDir="false" afterPath="$PROJECT_DIR$/pages/api/locations.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/component/KeyWordsTable.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/component/KeyWordsTable.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/component/LocationsTable.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/component/LocationsTable.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/component/ResultsTable.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/component/ResultsTable.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/component/urlMatchsTable.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/component/urlMatchsTable.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/keywords/data-table.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/keywords/data-table.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/locations/data-table.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/locations/data-table.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/resultLogs/columns.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/resultLogs/columns.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/resultLogs/data-table.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/resultLogs/data-table.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/results/columns.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/results/columns.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/results/data-table.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/results/data-table.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/urlMatchs/data-table.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/urlMatchs/data-table.tsx" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ChangesViewManager">
+    <option name="groupingKeys">
+      <option value="directory" />
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 6
+}</component>
+  <component name="ProjectId" id="2uAIh1fLFPOXHA7g1wqxHCYn5VB" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Docker.client.mongo: Compose Deployment.executor": "Run",
+    "Docker.client: Compose Deployment.executor": "Run",
+    "Node.js.pageLogs.js.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "last_opened_file_path": "/home/nghia/project/untitled1",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "npm.dev.executor": "Run",
+    "npm.start.executor": "Run",
+    "npm.test.executor": "Run",
+    "ts.external.directory.path": "/home/nghia/project/untitled1/node_modules/typescript/lib",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
+      <recent name="$PROJECT_DIR$/client" />
+      <recent name="$PROJECT_DIR$/client/src/app/results" />
+      <recent name="$PROJECT_DIR$/client/src/app/component" />
+      <recent name="$PROJECT_DIR$/client/src/app/resultLogs" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Node.js.page.tsx">
+    <configuration name="page.tsx" type="NodeJSConfigurationType" temporary="true" nameIsGenerated="true" path-to-js-file="$PROJECT_DIR$/src/app/resultLogs/page.tsx" working-dir="$PROJECT_DIR$/src/app/resultLogs">
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="docker-deploy" factoryName="docker-compose.yml" temporary="true">
+      <deployment type="docker-compose.yml">
+        <settings />
+      </deployment>
+      <method v="2" />
+    </configuration>
+    <configuration name="docker-compose.yml: Compose Deployment" type="docker-deploy" factoryName="docker-compose.yml" temporary="true" server-name="Docker">
+      <deployment type="docker-compose.yml">
+        <settings>
+          <option name="sourceFilePath" value="docker-compose.yml" />
+        </settings>
+      </deployment>
+      <method v="2" />
+    </configuration>
+    <configuration name="docker-compose.yml.mongo: Compose Deployment" type="docker-deploy" factoryName="docker-compose.yml" temporary="true" server-name="Docker">
+      <deployment type="docker-compose.yml">
+        <settings>
+          <option name="envFilePath" value="" />
+          <option name="services">
+            <list>
+              <option value="mongo" />
+            </list>
+          </option>
+          <option name="sourceFilePath" value="docker-compose.yml" />
+        </settings>
+      </deployment>
+      <method v="2" />
+    </configuration>
+    <configuration name="dev" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
+      <package-json value="$PROJECT_DIR$/client/package.json" />
+      <command value="run" />
+      <scripts>
+        <script value="dev" />
+      </scripts>
+      <node-interpreter value="project" />
+      <envs />
+      <method v="2" />
+    </configuration>
+    <configuration name="start" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
+      <package-json value="$PROJECT_DIR$/client/package.json" />
+      <command value="run" />
+      <scripts>
+        <script value="start" />
+      </scripts>
+      <node-interpreter value="project" />
+      <envs />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Node.js.page.tsx" />
+        <item itemvalue="Docker.docker-compose.yml: Compose Deployment" />
+        <item itemvalue="Docker.docker-compose.yml.mongo: Compose Deployment" />
+        <item itemvalue="npm.start" />
+        <item itemvalue="npm.dev" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-js-predefined-d6986cc7102b-1632447f56bf-JavaScript-WS-243.26053.12" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="8eeab5f4-dc4c-4a69-b28a-31bc76bdaa65" name="Changes" comment="" />
+      <created>1741685067360</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1741685067360</updated>
+      <workItem from="1741685068513" duration="304000" />
+      <workItem from="1741686123072" duration="12834000" />
+      <workItem from="1741792596521" duration="2343000" />
+      <workItem from="1741804641765" duration="8055000" />
+      <workItem from="1741875589701" duration="7340000" />
+      <workItem from="1742193909446" duration="50900000" />
+      <workItem from="1742378938931" duration="25485000" />
+      <workItem from="1742547066556" duration="2046000" />
+      <workItem from="1742549764590" duration="11174000" />
+      <workItem from="1742782882085" duration="26818000" />
+      <workItem from="1742870290886" duration="35811000" />
+      <workItem from="1742986913999" duration="34153000" />
+      <workItem from="1743344620808" duration="31917000" />
+      <workItem from="1743442281152" duration="33749000" />
+      <workItem from="1743593422898" duration="24732000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="UnknownFeatures">
+    <option featureType="com.intellij.fileTypeFactory" implementationName=".env" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/app/keywords/data-table.tsx</url>
+          <line>138</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="22" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+</project>

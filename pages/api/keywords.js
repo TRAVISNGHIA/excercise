@@ -1,8 +1,8 @@
-import mongoose from 'mongoose';
+import dbConnect from "../../db.js";
 import Keyword from '../../models/Keyword';
 
 export default async function handler(req, res) {
-    await mongoose.connect(process.env.MONGODB_URI);
+    await dbConnect();
 
     try {
         if (req.method === 'GET') {
