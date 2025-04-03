@@ -1,9 +1,10 @@
 import dbConnect from "../../db";
 import Keyword from '../../models/Keyword';
+import cors, { runMiddleware } from "../../utils/cors";
 
 export default async function handler(req, res) {
     await dbConnect();
-
+    await runMiddleware(req, res, cors);
     try {
         if (req.method === 'GET') {
             return res.status(200).json(await Keyword.find());
