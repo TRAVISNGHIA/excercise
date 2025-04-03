@@ -1,0 +1,34 @@
+version: '3.8'
+
+services:
+  app:
+    build: client
+    container_name: nextjs_app
+    ports:
+      - "3000:3000"
+    depends_on:
+      - mongo
+    environment:
+      - NODE_ENV=production
+      - MONGODB_URI=mongodb://nghianh:6d0yfrpx2tbw7hmz@localhost:27017/sem?authSource=admin
+    volumes:
+      - .:/app
+      - /app/node_modules
+    restart: always
+
+  mongo:
+    image: mongo:4.0
+    container_name: mongodb
+    environment:
+
+      - MONGO_INITDB_ROOT_USERNAME=nghianh
+      - MONGO_INITDB_ROOT_PASSWORD=6d0yfrpx2tbw7hmz
+
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    restart: always
+
+volumes:
+  mongo_data:
