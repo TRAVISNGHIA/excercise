@@ -6,6 +6,12 @@ export default async function handler(req, res) {
 
     const { id } = req.query;
 
+    if (req.method === "OPTIONS") {
+        res.setHeader("Allow", "GET, POST, PUT, DELETE, OPTIONS");
+        res.status(200).end();
+        return;
+    }
+
     if (req.method === "GET") {
         try {
             if (id) {
@@ -74,6 +80,5 @@ export default async function handler(req, res) {
             return res.status(500).json({ error: "Lỗi xóa dữ liệu", details: error.message });
         }
     }
-
     return res.status(405).json({ error: "Method không được hỗ trợ" });
 }
