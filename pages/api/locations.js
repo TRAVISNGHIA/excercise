@@ -1,12 +1,6 @@
 import dbConnect from "../../db.js";
 import Location from "../../models/Location.js";
 
-export const config = {
-    api: {
-        bodyParser: true,
-    },
-};
-
 export default async function handler(req, res) {
     await dbConnect();
 
