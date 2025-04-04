@@ -6,6 +6,8 @@ export default async function handler(req, res) {
     await dbConnect();
     await runMiddleware(req, res, cors);
 
+    const { id } = req.query;
+
     try {
         if (req.method === "OPTIONS") {
             res.setHeader("Allow", "GET, POST, PUT, DELETE, OPTIONS");
@@ -13,50 +15,65 @@ export default async function handler(req, res) {
         }
 
         if (req.method === "GET") {
-            return res.status(200).json({ message: "Thành công!" });
+            const locations = await Location.find({});
+            return res.status(200).json({ success: true, data: locations });
         }
 
         if (req.method === "POST") {
             const newLocation = new Location(req.body);
             const savedLocation = await newLocation.save();
-            return res.status(201).json(savedLocation);
+            return res.status(201).json({ success: true, data: savedLocation, message: "Tạo location thành công!" });
         }
 
         if (req.method === "PUT") {
-            if (!id) return res.status(400).json({ error: "Thiếu ID" });
+            if (!id) {
+                return res.status(400).json({ success: false, message: "Thiếu ID!" });
+            }
 
             const updateData = { ...req.body };
-            delete updateData._id; // Tránh lỗi nếu `_id` bị gửi lên
+            delete updateData._id;
 
             const updatedLocation = await Location.findByIdAndUpdate(id, updateData, {
                 new: true,
                 runValidators: true,
             });
 
-            if (!updatedLocation) return res.status(404).json({ error: "Không tìm thấy dữ liệu" });
+            if (!updatedLocation) {
+                return res.status(404).json({ success: false, message: "Không tìm thấy dữ liệu để cập nhật!" });
+            }
 
-            return res.status(200).json(updatedLocation);
+            return res.status(200).json({ success: true, data: updatedLocation, message: "Cập nhật thành công!" });
         }
 
         if (req.method === "DELETE") {
             const { ids } = req.body;
+
             if (!Array.isArray(ids) || ids.length === 0) {
-                return res.status(400).json({ error: "Thiếu danh sách ID để xóa" });
+                return res.status(400).json({ success: false, message: "Danh sách ID không hợp lệ!" });
             }
 
             const uniqueIds = [...new Set(ids)];
             const result = await Location.deleteMany({ _id: { $in: uniqueIds } });
 
             if (result.deletedCount === 0) {
-                return res.status(404).json({ error: "Không tìm thấy dữ liệu để xóa" });
+                return res.status(404).json({ success: false, message: "Không tìm thấy dữ liệu để xóa!" });
             }
 
-            return res.status(200).json({ message: "Xóa thành công", deletedCount: result.deletedCount });
+            return res.status(200).json({
+                success: true,
+                message: "Xóa thành công!",
+                deletedCount: result.deletedCount,
+            });
         }
 
-        return res.status(405).json({ error: `Method ${req.method} không được hỗ trợ` });
+        return res.status(405).json({ success: false, message: `Method ${req.method} không được hỗ trợ!` });
+
     } catch (error) {
-        console.error("Lỗi API:", error);
-        return res.status(500).json({ error: "Lỗi xử lý dữ liệu", details: error.message });
+        console.error("Lỗi API Location:", error);
+        return res.status(500).json({
+            success: false,
+            message: "Lỗi xử lý dữ liệu!",
+            error: error.message,
+        });
     }
 }
