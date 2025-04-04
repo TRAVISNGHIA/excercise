@@ -32,16 +32,17 @@ export default function LocationsTable() {
 
     const handleRequest = async (method, payload = {}, id = null) => {
         let url = API_URL;
-        if (id) url += `/${id}`;
+        if (method === "put" && id) {
+            url += `?id=${id}`;
+        }
 
         try {
-            console.log(`Sending ${method.toUpperCase()} request to:`, url, payload);
             await axios({ method, url, data: payload });
             toast.success(method === "delete" ? "Xóa thành công!" : "Lưu thành công!");
             fetchData();
             setIsModalOpen(false);
         } catch (error) {
-            console.error("API Error:", error.response?.data || error.message);
+            console.error("Lỗi xử lý dữ liệu:", error.response?.data || error.message);
             toast.error("Lỗi xử lý dữ liệu!");
         }
     };
@@ -52,40 +53,39 @@ export default function LocationsTable() {
         }
 
         if (editingData._id) {
-            handleRequest("put", editingData, editingData._id);
+            const updatedData = { ...editingData };
+            delete updatedData._id;
+            handleRequest("put", updatedData, editingData._id);
         } else {
             handleRequest("post", editingData);
         }
     };
 
-    const handleDelete = async () => {
-        const selectedRows = table.getSelectedRowModel().rows.map((row) => row.original._id);
-        if (selectedRows.length > 0) {
-            try {
-                await axios.delete("http://localhost:3000/api/locations", {
-                    data: { ids: selectedRows },
-                });
-                toast.success(`Xóa thành công ${selectedRows.length} mục!`);
-                if (onDelete) onDelete(selectedRows);
-            } catch (error) {
-                console.log(error);
-                toast.error("Lỗi khi xóa dữ liệu!");
-            }
+    const handleDelete = async (selectedRows) => {
+        if (!selectedRows.length) return toast.error("Chọn ít nhất một mục!");
+        const ids = selectedRows.map(row => row._id);
+        try {
+            await handleRequest("delete", { ids });
+        } catch (error) {
+            console.error(error);
+            toast.error("Lỗi khi xóa dữ liệu!");
         }
-    };
-
-
-    const handleEdit = (rowData) => {
-        setEditingData(rowData);
-        setIsModalOpen(true);
     };
 
     return (
         <div className="p-4 border rounded-lg">
             <div className="flex justify-between mb-4">
-                <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
+                <Dialog
+                    open={isModalOpen}
+                    onOpenChange={(open) => {
+                        setIsModalOpen(open);
+                        if (!open) setEditingData({});
+                    }}
+                >
                     <DialogTrigger asChild>
-                        <Button onClick={() => { setEditingData({}); setIsModalOpen(true); }}>Thêm mới</Button>
+                        <Button onClick={() => { setEditingData({}); setIsModalOpen(true); }}>
+                            Thêm mới
+                        </Button>
                     </DialogTrigger>
                     <DialogContent>
                         <DialogHeader>
@@ -96,13 +96,16 @@ export default function LocationsTable() {
                                 key={field}
                                 placeholder={field}
                                 value={editingData?.[field] || ""}
-                                onChange={(e) => setEditingData({ ...editingData, [field]: e.target.value })}
+                                onChange={(e) =>
+                                    setEditingData({ ...editingData, [field]: e.target.value })
+                                }
                             />
                         ))}
                         <Button onClick={handleSave}>Lưu</Button>
                     </DialogContent>
                 </Dialog>
             </div>
+
             <div className="flex gap-2 mb-4">
                 <button onClick={() => exportToCSV(data)} className="bg-black text-white px-4 py-1 rounded">
                     Xuất CSV
@@ -115,7 +118,12 @@ export default function LocationsTable() {
                     {
                         id: "actions",
                         cell: ({ row }) => (
-                            <Button size="sm" onClick={() => handleEdit(row.original)}>Sửa</Button>
+                            <Button size="sm" onClick={() => {
+                                setEditingData(row.original);
+                                setIsModalOpen(true);
+                            }}>
+                                Sửa
+                            </Button>
                         ),
                     },
                 ]}

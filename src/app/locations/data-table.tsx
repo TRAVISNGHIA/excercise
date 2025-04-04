@@ -11,6 +11,14 @@ import {
     getSortedRowModel,
     useReactTable,
 } from "@tanstack/react-table";
+
+import {
+    NavigationMenu,
+    NavigationMenuItem,
+    NavigationMenuLink,
+    NavigationMenuList,
+} from "@/components/ui/navigation-menu";
+
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -21,33 +29,18 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
-import { toast } from "react-hot-toast";
-
-import {
-    NavigationMenu,
-    NavigationMenuItem,
-    NavigationMenuLink,
-    NavigationMenuList
-} from "@/components/ui/navigation-menu";
-
-interface Location {
-    _id: string;
-    encodedId: string;
-    address: string;
-}
 
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[];
     data: TData[];
-    onDelete?: (selectedRows: string[]) => void;
-
+    onDelete?: (selectedRows: TData[]) => void;
 }
+
 export function DataTable<TData, TValue>({
                                              columns,
                                              data,
                                              onDelete,
-
-                                         }: DataTableProps<TData, TValue>)  {
+                                         }: DataTableProps<TData, TValue>) {
     const [sorting, setSorting] = React.useState<SortingState>([]);
     const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
     const [rowSelection, setRowSelection] = React.useState({});
@@ -69,17 +62,12 @@ export function DataTable<TData, TValue>({
         },
     });
 
-    const handleDelete = async () => {
-        const selectedRows = table.getSelectedRowModel().rows.map((row) => (row.original as any)._id);
-        if (selectedRows.length === 0) {
-            toast.error("Vui lòng chọn ít nhất một dòng để xóa");
-            return;
-        }
-
-        if (onDelete) {
+    const handleDelete = () => {
+        const selectedRows = table.getSelectedRowModel().rows.map((row) => row.original as TData);
+        if (selectedRows.length > 0 && onDelete) {
             onDelete(selectedRows);
         }
-    }
+    };
 
     return (
         <div className="p-4 bg-white rounded-lg shadow">
@@ -123,17 +111,18 @@ export function DataTable<TData, TValue>({
                 </div>
                 {table.getSelectedRowModel().rows.length > 0 && (
                     <Button variant="destructive" onClick={handleDelete}>
-                        Xóa {table.getSelectedRowModel().rows.length} dòng đã chọn
+                        Xóa đã chọn
                     </Button>
                 )}
             </div>
+
             <div className="rounded-md border overflow-hidden">
                 <Table>
                     <TableHeader>
                         {table.getHeaderGroups().map((headerGroup) => (
                             <TableRow key={headerGroup.id}>
                                 {headerGroup.headers.map((header) => (
-                                    <TableHead key={header.id}>
+                                    <TableHead key={header.column.id}>
                                         {header.isPlaceholder
                                             ? null
                                             : flexRender(
@@ -146,9 +135,9 @@ export function DataTable<TData, TValue>({
                         ))}
                     </TableHeader>
                     <TableBody>
-                        {table.getRowModel().rows?.length ? (
+                        {table.getRowModel().rows.length ? (
                             table.getRowModel().rows.map((row) => (
-                                <TableRow key={row.id} data-state={row.getIsSelected() && "selected"}>
+                                <TableRow key={(row.original as any)._id} data-state={row.getIsSelected() && "selected"}>
                                     {row.getVisibleCells().map((cell) => (
                                         <TableCell key={cell.id}>
                                             {flexRender(cell.column.columnDef.cell, cell.getContext())}

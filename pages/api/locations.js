@@ -6,8 +6,6 @@ export default async function handler(req, res) {
     await dbConnect();
     await runMiddleware(req, res, cors);
 
-    const { id } = req.query;
-
     try {
         if (req.method === "OPTIONS") {
             res.setHeader("Allow", "GET, POST, PUT, DELETE, OPTIONS");
