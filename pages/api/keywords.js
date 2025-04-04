@@ -4,7 +4,7 @@ import cors, { runMiddleware } from "../../utils/cors";
 
 export default async function handler(req, res) {
     await dbConnect();
-    await runMiddleware(req, res, cors); // ✅ Chạy CORS trước khi xử lý request
+    await runMiddleware(req, res, cors);
 
     if (req.method === 'OPTIONS') {
         res.setHeader("Allow", "GET, POST, PUT, DELETE, OPTIONS"); // ✅ Định nghĩa các phương thức được phép
