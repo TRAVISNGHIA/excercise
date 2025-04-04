@@ -77,7 +77,7 @@ export function DataTable<TData, TValue>({
             <NavigationMenu>
                 <NavigationMenuList>
                     <NavigationMenuItem>
-                        <NavigationMenuLink href="/public">Home</NavigationMenuLink>
+                        <NavigationMenuLink href="/">Home</NavigationMenuLink>
                     </NavigationMenuItem>
                     <NavigationMenuItem>
                         <NavigationMenuLink href="/keywords">Keywords</NavigationMenuLink>
