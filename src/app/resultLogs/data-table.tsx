@@ -113,8 +113,8 @@ export function DataTable<TData, TValue>({
                     />
                     <Input
                         placeholder="Lọc theo địa điểm..."
-                        value={(table.getColumn("location")?.getFilterValue() as string) ?? ""}
-                        onChange={(event) => table.getColumn("location")?.setFilterValue(event.target.value)}
+                        value={(table.getColumn("Địa điểm")?.getFilterValue() as string) ?? ""}
+                        onChange={(event) => table.getColumn("Địa điểm")?.setFilterValue(event.target.value)}
                         className="max-w-xs"
                     />
                     <Input

@@ -23,7 +23,7 @@ export default function LocationsTable() {
     const fetchData = async () => {
         try {
             const res = await axios.get(API_URL);
-            setData(res.data);
+            setData(res.data.data);
         } catch (error) {
             console.error("Lỗi khi tải dữ liệu:", error.response?.data || error.message);
             toast.error("Lỗi khi tải dữ liệu!");
