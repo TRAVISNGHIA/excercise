@@ -4,24 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8eeab5f4-dc4c-4a69-b28a-31bc76bdaa65" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/eslint.config.mjs" beforeDir="false" afterPath="$PROJECT_DIR$/eslint.config.mjs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/node_modules/.package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/.package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/api/keywords.js" beforeDir="false" afterPath="$PROJECT_DIR$/pages/api/keywords.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/api/locations.js" beforeDir="false" afterPath="$PROJECT_DIR$/pages/api/locations.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/component/KeyWordsTable.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/component/KeyWordsTable.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/component/LocationsTable.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/component/LocationsTable.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/component/ResultsTable.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/component/ResultsTable.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/component/urlMatchsTable.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/component/urlMatchsTable.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/keywords/data-table.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/keywords/data-table.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/locations/data-table.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/locations/data-table.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/resultLogs/columns.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/resultLogs/columns.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/resultLogs/data-table.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/resultLogs/data-table.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/results/columns.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/results/columns.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/results/data-table.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/results/data-table.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/urlMatchs/data-table.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/urlMatchs/data-table.tsx" afterDir="false" />
-    </list>
+    <list default="true" id="8eeab5f4-dc4c-4a69-b28a-31bc76bdaa65" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -34,6 +17,9 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="PackageJsonUpdateNotifier">
+    <dismissed value="$PROJECT_DIR$/package.json" />
   </component>
   <component name="ProblemsViewState">
     <option name="selectedTabId" value="CurrentFile" />
@@ -56,6 +42,7 @@
     "Node.js.pageLogs.js.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "main",
     "last_opened_file_path": "/home/nghia/project/untitled1",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
@@ -170,6 +157,7 @@
       <workItem from="1743344620808" duration="31917000" />
       <workItem from="1743442281152" duration="33749000" />
       <workItem from="1743593422898" duration="24732000" />
+      <workItem from="1743676955856" duration="19970000" />
     </task>
     <servers />
   </component>
@@ -189,17 +177,5 @@
         </entry>
       </map>
     </option>
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/src/app/keywords/data-table.tsx</url>
-          <line>138</line>
-          <properties lambdaOrdinal="-1" />
-          <option name="timeStamp" value="22" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
 </project>
