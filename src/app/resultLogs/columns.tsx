@@ -80,6 +80,13 @@ export const columns: ColumnDef<ResultLog>[] = [
     },
     {
         accessorKey: "image",
-        header: "Hình ảnh"
-    }
+        header: "Hình ảnh",
+        cell: ({ row }) => (
+            <img
+                src={row.getValue("image")}
+                alt={`Hình ảnh ${row.original.brand}`} // Sử dụng brand làm alt text nếu có
+                className="w-20 h-auto" // Điều chỉnh kích thước hình ảnh theo ý muốn
+            />
+        ),
+    },
 ]

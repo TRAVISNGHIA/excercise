@@ -81,6 +81,15 @@ export const columns: ColumnDef<Result>[] = [
     {
         accessorKey: "image",
         header: "Hình ảnh",
-
+        cell: ({ row }) => {
+            const imageUrl = row.original.image;
+            return (
+                <img
+                    src={imageUrl}
+                    alt="Hình ảnh"
+                    className="w-20 h-20 object-cover rounded-md border"
+                />
+            );
+        },
     }
 ]

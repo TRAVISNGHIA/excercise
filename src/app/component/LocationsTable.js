@@ -129,6 +129,9 @@ export default function LocationsTable() {
                 ]}
                 data={data}
                 onDelete={handleDelete}
+                className="table-auto w-full border-collapse"
+                cellClassName="px-4 py-2 border-b"
+                headerClassName="text-left px-4 py-2 bg-gray-100 border-b"
             />
         </div>
     );

@@ -103,7 +103,6 @@ export function DataTable<TData, TValue>({
                     </NavigationMenuItem>
                 </NavigationMenuList>
             </NavigationMenu>
-
             <div className="flex items-center justify-between py-4 gap-4">
                 <div className="flex gap-2">
                     <Input
