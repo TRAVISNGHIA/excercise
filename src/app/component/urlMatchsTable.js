@@ -14,7 +14,7 @@ export default function UrlMatchTable() {
     const [data, setData] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [editingData, setEditingData] = useState({ url: "" });
-    const API_URL = "https://excercise-duu9.onrender.com/api/keywords";
+    const API_URL = "https://excercise-duu9.onrender.com/api/urlMatchs";
 
     useEffect(() => { fetchData(); }, []);
 

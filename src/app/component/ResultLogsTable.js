@@ -14,7 +14,7 @@ export default function ResultLogsTable() {
     const [data, setData] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [editingData, setEditingData] = useState({});
-    const API_URL = "https://excercise-duu9.onrender.com/api/keywords";
+    const API_URL = "https://excercise-duu9.onrender.com/api/resultLogs";
 
     useEffect(() => { fetchData(); }, []);
 
