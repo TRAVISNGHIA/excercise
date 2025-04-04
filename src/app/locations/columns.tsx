@@ -5,13 +5,13 @@ import { ArrowUpDown } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 
-export type Location = {
+export type location = {
     _id: string
     encodedId: string
     address: string
 }
 
-export const columns: ColumnDef<Location>[] = [
+export const columns: ColumnDef<location>[] = [
     {
         id: "select",
         header: ({ table }) => (
