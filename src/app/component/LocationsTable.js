@@ -11,6 +11,7 @@ import { toast } from "sonner";
 import { exportToCSV } from "../../../utils/exportUtils";
 
 export default function LocationsTable() {
+    const [csvFile, setCsvFile] = useState(null);
     const [data, setData] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [editingData, setEditingData] = useState({});
@@ -71,9 +72,42 @@ export default function LocationsTable() {
             toast.error("Lỗi khi xóa dữ liệu!");
         }
     };
+    const handleFileChange = (e) => {
+        const file = e.target.files[0];
+        if (file && file.type === "text/csv") {
+            setCsvFile(file);
+        } else {
+            toast.error("Vui lòng chọn file CSV!");
+        }
+    };
 
+    const handleFileUpload = async () => {
+        if (!csvFile) return toast.error("Vui lòng chọn file CSV trước!");
+
+        const formData = new FormData();
+        formData.append("csvFile", csvFile);
+
+        try {
+            const res = await axios.post("/api/import", formData, {
+                headers: { "Content-Type": "multipart/form-data" },
+            });
+            toast.success("Import CSV thành công!");
+            fetchData();
+        } catch (error) {
+            toast.error("Lỗi khi tải file CSV lên!");
+        }
+    };
     return (
         <div className="p-4 border rounded-lg">
+            <div className="flex gap-2 mb-4">
+                <input
+                    type="file"
+                    accept=".csv"
+                    onChange={handleFileChange}
+                    className="px-4 py-1 rounded"
+                />
+                <Button onClick={handleFileUpload}>Import CSV</Button>
+            </div>
             <div className="flex justify-between mb-4">
                 <Dialog
                     open={isModalOpen}

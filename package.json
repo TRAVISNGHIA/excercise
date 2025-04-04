@@ -26,6 +26,7 @@
     "docker-compose": "^1.2.0",
     "dotenv": "^16.4.7",
     "file-saver": "^2.0.5",
+    "formidable": "^3.5.2",
     "gh-pages": "^6.3.0",
     "lucide-react": "^0.483.0",
     "mongoose": "^8.12.1",
