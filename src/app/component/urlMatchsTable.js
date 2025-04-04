@@ -21,7 +21,6 @@ export default function UrlMatchTable() {
     const fetchData = async () => {
         try {
             const res = await axios.get(API_URL);
-            // Sửa chỗ này: Kiểm tra cấu trúc phản hồi và đặt dữ liệu đúng cách
             setData(Array.isArray(res.data) ? res.data : (res.data.data || []));
         } catch (error) {
             console.error("Lỗi khi tải dữ liệu:", error);
