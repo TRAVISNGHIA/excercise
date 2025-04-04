@@ -1,7 +1,7 @@
 import Cors from "cors";
 
 const cors = Cors({
-    methods: ["GET", "POST", "OPTIONS"],
+    methods: ["GET", "POST","DELETE","PUT", "OPTIONS"],
     origin: "*",
 });
 

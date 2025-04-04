@@ -7,7 +7,7 @@ export default async function handler(req, res) {
     await runMiddleware(req, res, cors);
 
     if (req.method === 'OPTIONS') {
-        res.setHeader("Allow", "GET, POST, PUT, DELETE, OPTIONS"); // ✅ Định nghĩa các phương thức được phép
+        res.setHeader("Allow", "GET, POST, PUT, DELETE, OPTIONS");
         return res.status(200).end();
     }
 
