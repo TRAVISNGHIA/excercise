@@ -152,12 +152,14 @@ export default function LocationsTable() {
                     {
                         id: "actions",
                         cell: ({ row }) => (
-                            <Button size="sm" onClick={() => {
-                                setEditingData(row.original);
-                                setIsModalOpen(true);
-                            }}>
-                                Sửa
-                            </Button>
+                            <div className="flex justify-end">
+                                <Button
+                                    size="sm"
+                                    onClick={() => { setEditingData(row.original); setIsModalOpen(true); }}
+                                >
+                                    Sửa
+                                </Button>
+                            </div>
                         ),
                     },
                 ]}

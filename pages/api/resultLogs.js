@@ -1,4 +1,4 @@
-import ResultLog from "../../models/ResultLog"; // Sửa "resultLogs" thành "resultLogs"
+import ResultLog from "../../models/ResultLog";
 import dbConnect from "../../db.js";
 import cors, { runMiddleware } from "../../utils/cors";
 
