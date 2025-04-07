@@ -80,14 +80,14 @@ export default function ResultLogsTable() {
                 headers: { "Content-Type": "multipart/form-data" },
             });
             toast.success("Import CSV thành công!");
-            fetchData(); // Reload dữ liệu sau khi import thành công
+            fetchData();
         } catch (error) {
             toast.error("Lỗi khi tải file CSV lên!");
         }
     };
 
     return (
-        <div className="p-4 border rounded-lg">
+        <div className="p-4 border rounded-lg ">
             <div className="flex gap-2 mb-4">
                 <input
                     type="file"
