@@ -36,8 +36,8 @@ export default function ResultLogsTable() {
         try {
             await axios({ method, url, data: payload });
             toast.success(method === "delete" ? "Xóa thành công!" : "Lưu thành công!");
-            fetchData();
             setIsModalOpen(false);
+            window.location.reload();
         } catch {
             toast.error("Lỗi xử lý dữ liệu!");
         }
@@ -81,7 +81,7 @@ export default function ResultLogsTable() {
                 headers: { "Content-Type": "multipart/form-data" },
             });
             toast.success("Import CSV thành công!");
-            fetchData();
+            window.location.reload();
         } catch {
             toast.error("Lỗi khi tải file CSV lên!");
         }
