@@ -135,7 +135,8 @@ export default function KeywordsTable() {
                             >
                                 Sửa
                             </Button>
-                        </div> }
+                        </div>
+                    }
                 ]}
                 data={data}
                 onDelete={handleDelete}

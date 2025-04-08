@@ -1,14 +1,8 @@
-import { IncomingForm } from "formidable";
+import formidable from "formidable";
 import fs from "fs";
 import path from "path";
 import Papa from "papaparse";
-import dbConnect from "../../db";
-
-import Keyword from "../../models/Keyword";
-import UrlMatch from "../../models/UrlMatch";
-import Result from "../../models/Result";
-import ResultLog from "../../models/ResultLog";
-import Location from "../../models/Location";
+import { dbConnect } from "../../db";
 
 export const config = {
     api: {
@@ -16,90 +10,42 @@ export const config = {
     },
 };
 
-const MODEL_CONFIG = [
-    {
-        model: Keyword,
-        condition: (row) => row.key,
-        mapper: (row) => ({ key: row.key }),
-    },
-    {
-        model: UrlMatch,
-        condition: (row) => row.url && !row.key,
-        mapper: (row) => ({ url: row.url }),
-    },
-    {
-        model: Result,
-        condition: (row) => row.timestamp && row.campaignName && row.location && row.url && row.source && row.image,
-        mapper: (row) => ({
-            timestamp: row.timestamp,
-            campaignName: row.campaignName,
-            location: row.location,
-            url: row.url,
-            source: row.source,
-            image: row.image,
-        }),
-    },
-    {
-        model: ResultLog,
-        condition: (row) => row.timestamp && row.brand,
-        mapper: (row) => ({
-            timestamp: row.timestamp,
-            brand: row.brand,
-            location: row.location,
-            url: row.url,
-            source: row.source,
-            image: row.image,
-        }),
-    },
-    {
-        model: Location,
-        condition: (row) => row.encodedId,
-        mapper: (row) => ({
-            encodedId: row.encodedId,
-            address: row.address,
-        }),
-    },
-];
-
 const importCSV = async (req, res) => {
-    await dbConnect();
-
-    const form = new IncomingForm();
+    const form = new formidable.IncomingForm();
     form.uploadDir = path.join(process.cwd(), "/tmp");
     form.keepExtensions = true;
 
     form.parse(req, async (err, fields, files) => {
         if (err) return res.status(500).send("Lỗi khi tải file lên");
 
-        const file = files.csvFile[0];
+        const file = files.csvFile[0]; // Lấy file từ form
         const filePath = file.filepath;
 
         try {
+
             const fileContent = fs.readFileSync(filePath, "utf8");
 
-            const { data } = Papa.parse(fileContent, { header: true });
 
-            for (const { model, condition, mapper } of MODEL_CONFIG) {
-                const docs = data.filter(condition).map(mapper);
-                if (docs.length) {
-                    try {
-                        await model.insertMany(docs, { ordered: false });
-                    } catch (insertErr) {
-                        if (insertErr.code === 11000 || insertErr.name === "MongoBulkWriteError") {
-                            console.warn("⚠️ Một số bản ghi trùng đã bị bỏ qua.");
-                        } else {
-                            console.error("❌ Lỗi insert:", insertErr);
-                            return res.status(500).json({ message: "Lỗi khi insert dữ liệu." });
-                        }
-                    }
-                }
-            }
+            Papa.parse(fileContent, {
+                complete: async (result) => {
+                    const { db } = await connectToDatabase(); // Kết nối đến database
 
-            fs.unlinkSync(filePath);
-            res.status(200).json({ message: "Import CSV thành công!" });
+                    const keywords = result.data.map((row) => ({
+                        key: row.key, // Giả sử dữ liệu trong CSV có trường "key"
+                    }));
 
+
+                    await db.collection("keywords").insertMany(keywords);
+
+
+                    fs.unlinkSync(filePath);
+
+                    res.status(200).json({ message: "CSV đã được import thành công!" });
+                },
+                header: true, // Đảm bảo dữ liệu trong CSV có header
+            });
         } catch (err) {
-            console.error("Lỗi xử lý CSV:", err);
+            console.error(err);
             res.status(500).send("Lỗi khi xử lý file CSV");
         }
     });
