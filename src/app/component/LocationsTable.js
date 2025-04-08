@@ -145,7 +145,8 @@ export default function LocationsTable() {
                     Xuất CSV
                 </button>
             </div>
-
+            <div className="overflow-x-auto">
+                <div className="max-h-[500px] overflow-y-auto border rounded">
             <DataTable
                 columns={[
                     ...columns,
@@ -169,6 +170,8 @@ export default function LocationsTable() {
                 cellClassName="px-4 py-2 border-b"
                 headerClassName="text-left px-4 py-2 bg-gray-100 border-b"
             />
+                </div>
+            </div>
         </div>
     );
 }

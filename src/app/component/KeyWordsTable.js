@@ -122,19 +122,13 @@ export default function KeywordsTable() {
                     Xuất CSV
                 </button>
             </div>
+            <div className="overflow-x-auto">
+                <div className="max-h-[500px] overflow-y-auto border rounded">
             <DataTable
                 columns={[
                     ...columns,
                     { id: "actions",
-                        cell: ({ row }) =>  <div className="flex justify-end">
-                            <Button
-                                size="sm"
-                                onClick={() => { setEditingData(row.original); setIsModalOpen(true); }}
-                            >
-                                Sửa
-                            </Button>
-                        </div>
-                    }
+                        cell: ({ row }) => <Button size="sm" onClick={() => { setEditingData(row.original); setIsModalOpen(true); }}>Sửa</Button> }
                 ]}
                 data={data}
                 onDelete={handleDelete}
@@ -142,6 +136,8 @@ export default function KeywordsTable() {
                 cellClassName="px-4 py-2 border-b"
                 headerClassName="text-left px-4 py-2 bg-gray-100 border-b"
             />
+                </div>
+            </div>
         </div>
     );
 }

@@ -119,7 +119,8 @@ export default function UrlMatchTable() {
                     Xuất CSV
                 </button>
             </div>
-
+            <div className="overflow-x-auto">
+                <div className="max-h-[500px] overflow-y-auto border rounded">
             <DataTable
                 columns={[
                     ...columns,
@@ -137,6 +138,8 @@ export default function UrlMatchTable() {
                 data={data}
                 onDelete={handleDelete}
             />
+                </div>
+            </div>
         </div>
     );
 }

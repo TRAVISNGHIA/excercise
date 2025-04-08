@@ -10,7 +10,7 @@ import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import { exportToCSV } from "../../../utils/exportUtils";
 
-export default function ResultLogsTable() {
+export default function ResultsTable() {
     const [csvFile, setCsvFile] = useState(null);
     const [data, setData] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -117,23 +117,20 @@ export default function ResultLogsTable() {
             <div className="flex gap-2 mb-4">
                 <Button onClick={() => exportToCSV(data)}>Xuất CSV</Button>
             </div>
+            <div className="overflow-x-auto">
+                <div className="max-h-[500px] overflow-y-auto border rounded">
             <DataTable
                 columns={[
                     ...columns,
                     { id: "actions",
-                        cell: ({ row }) =>  <div className="flex justify-end">
-                            <Button
-                                size="sm"
-                                onClick={() => { setEditingData(row.original); setIsModalOpen(true); }}
-                            >
-                                Sửa
-                            </Button>
-                        </div>
-                    }
+                        cell: ({ row }) => <Button size="sm" onClick={() => { setEditingData(row.original); setIsModalOpen(true); }}>Sửa</Button> }
                 ]}
                 data={data}
                 onDelete={handleDelete}
             />
+
+                </div>
+            </div>
         </div>
     );
 }
