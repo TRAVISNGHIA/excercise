@@ -74,6 +74,7 @@ export default function ResultsTable() {
 
         const formData = new FormData();
         formData.append("csvFile", csvFile);
+        formData.append("type", "result");
 
         try {
             const res = await axios.post("/api/import", formData, {

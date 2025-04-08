@@ -74,6 +74,7 @@ export default function UrlMatchTable() {
 
         const formData = new FormData();
         formData.append("csvFile", csvFile);
+        formData.append("type", "urlmatch");
 
         try {
             const res = await axios.post("/api/import", formData, {

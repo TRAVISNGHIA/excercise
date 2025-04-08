@@ -61,6 +61,7 @@ export default function KeywordsTable() {
             toast.success(method === "delete" ? "Xóa thành công!" : "Lưu thành công!");
             fetchData();
             setIsModalOpen(false);
+            window.location.reload();
         } catch {
             toast.error("Lỗi xử lý dữ liệu!");
         }
@@ -79,13 +80,14 @@ export default function KeywordsTable() {
 
         const formData = new FormData();
         formData.append("csvFile", csvFile);
-
+        formData.append("type", "keyword");
         try {
             const res = await axios.post("/api/import", formData, {
                 headers: { "Content-Type": "multipart/form-data" },
             });
             toast.success("Import CSV thành công!");
-            fetchData();
+            setData((prevData) => [...prevData, ...res.data.data]);
+            window.location.reload();
         } catch (error) {
             toast.error("Lỗi khi tải file CSV lên!");
         }
@@ -128,15 +130,7 @@ export default function KeywordsTable() {
                 columns={[
                     ...columns,
                     { id: "actions",
-                        cell: ({ row }) => <div className="flex justify-end">
-                            <Button
-                                size="sm"
-                                onClick={() => { setEditingData(row.original); setIsModalOpen(true); }}
-                            >
-                                Sửa
-                            </Button>
-                        </div>
-                    }
+                        cell: ({ row }) => <Button size="sm" onClick={() => { setEditingData(row.original); setIsModalOpen(true); }}>Sửa</Button> }
                 ]}
                 data={data}
                 onDelete={handleDelete}

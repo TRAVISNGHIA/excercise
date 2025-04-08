@@ -86,6 +86,7 @@ export default function LocationsTable() {
 
         const formData = new FormData();
         formData.append("csvFile", csvFile);
+        formData.append("type", "location");
 
         try {
             const res = await axios.post("/api/import", formData, {
