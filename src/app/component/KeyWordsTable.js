@@ -128,7 +128,14 @@ export default function KeywordsTable() {
                 columns={[
                     ...columns,
                     { id: "actions",
-                        cell: ({ row }) => <Button size="sm" onClick={() => { setEditingData(row.original); setIsModalOpen(true); }}>Sửa</Button> }
+                        cell: ({ row }) => <div className="flex justify-end">
+                            <Button
+                                size="sm"
+                                onClick={() => { setEditingData(row.original); setIsModalOpen(true); }}
+                            >
+                                Sửa
+                            </Button>
+                        </div> }
                 ]}
                 data={data}
                 onDelete={handleDelete}

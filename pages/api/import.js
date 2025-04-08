@@ -4,7 +4,6 @@ import path from "path";
 import Papa from "papaparse";
 import dbConnect from "../../db";
 
-// Models
 import Keyword from "../../models/Keyword";
 import UrlMatch from "../../models/UrlMatch";
 import Result from "../../models/Result";
@@ -30,7 +29,7 @@ const MODEL_CONFIG = [
     },
     {
         model: Result,
-        condition: (row) => row.timestamp && row.image && !row.brand,
+        condition: (row) => row.timestamp && row.campaignName && row.location && row.url && row.source && row.image,
         mapper: (row) => ({
             timestamp: row.timestamp,
             campaignName: row.campaignName,
@@ -78,16 +77,13 @@ const importCSV = async (req, res) => {
         try {
             const fileContent = fs.readFileSync(filePath, "utf8");
 
-            Papa.parse(fileContent, {
-                header: true,
-                complete: async ({ data }) => {
+            const { data } = Papa.parse(fileContent, { header: true });
+
+            for (const { model, condition, mapper } of MODEL_CONFIG) {
+                const docs = data.filter(condition).map(mapper);
+                if (docs.length) {
                     try {
-                        for (const { model, condition, mapper } of MODEL_CONFIG) {
-                            const docs = data.filter(condition).map(mapper);
-                            if (docs.length) {
-                                await model.insertMany(docs, { ordered: false });
-                            }
-                        }
+                        await model.insertMany(docs, { ordered: false });
                     } catch (insertErr) {
                         if (insertErr.code === 11000 || insertErr.name === "MongoBulkWriteError") {
                             console.warn("⚠️ Một số bản ghi trùng đã bị bỏ qua.");
@@ -95,13 +91,13 @@ const importCSV = async (req, res) => {
                             console.error("❌ Lỗi insert:", insertErr);
                             return res.status(500).json({ message: "Lỗi khi insert dữ liệu." });
                         }
-                    } finally {
-                        fs.unlinkSync(filePath);
                     }
+                }
+            }
 
-                    res.status(200).json({ message: "Import CSV thành công!" });
-                },
-            });
+            fs.unlinkSync(filePath);
+            res.status(200).json({ message: "Import CSV thành công!" });
+
         } catch (err) {
             console.error("Lỗi xử lý CSV:", err);
             res.status(500).send("Lỗi khi xử lý file CSV");

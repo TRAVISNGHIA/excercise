@@ -60,6 +60,10 @@ export function DataTable<TData, TValue>({
             sorting,
             columnFilters,
             rowSelection,
+            pagination: {
+                pageIndex: 0,
+                pageSize: data.length
+            }
         },
     });
 

@@ -124,7 +124,8 @@ export default function ResultLogsTable() {
                 columns={[
                     ...columns,
                     { id: "actions",
-                        cell: ({ row }) =>  <div className="flex justify-end">
+                        cell: ({ row }) =>
+                        <div className="flex justify-end">
                             <Button
                                 size="sm"
                                 onClick={() => { setEditingData(row.original); setIsModalOpen(true); }}

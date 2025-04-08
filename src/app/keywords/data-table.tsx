@@ -35,11 +35,13 @@ interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[];
     data: TData[];
     onDelete?: (selectedRows: TData[]) => void;
+    isLoading?: boolean;
 }
 export function DataTable<TData, TValue>({
                                              columns,
                                              data,
                                              onDelete,
+                                             isLoading,
                                          }: DataTableProps<TData, TValue>) {
     const [sorting, setSorting] = React.useState<SortingState>([]);
     const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
@@ -59,6 +61,10 @@ export function DataTable<TData, TValue>({
             sorting,
             columnFilters,
             rowSelection,
+            pagination: {
+                pageIndex: 0,
+                pageSize: data.length
+            }
         },
     });
 
@@ -129,7 +135,13 @@ export function DataTable<TData, TValue>({
                         ))}
                     </TableHeader>
                     <TableBody>
-                        {table.getRowModel().rows?.length ? (
+                        {isLoading ? (
+                            <TableRow>
+                                <TableCell colSpan={columns.length} className="h-24 text-center">
+                                    Đang tải dữ liệu...
+                                </TableCell>
+                            </TableRow>
+                        ) : table.getRowModel().rows?.length ? (
                             table.getRowModel().rows.map((row) => (
                                 <TableRow key={(row.original as any)._id} data-state={row.getIsSelected() && "selected"}>
                                     {row.getVisibleCells().map((cell) => (

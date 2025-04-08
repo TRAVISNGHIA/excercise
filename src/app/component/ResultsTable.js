@@ -115,7 +115,7 @@ export default function ResultsTable() {
                 </Dialog>
             </div>
             <div className="flex gap-2 mb-4">
-                <Button onClick={() => exportToCSV(data)}>Xuất CSV</Button>
+                <Button onClick={() => exportToCSV(data)} className="bg-black text-white px-4 py-1 rounded" >Xuất CSV</Button>
             </div>
             <div className="overflow-x-auto">
                 <div className="max-h-[500px] overflow-y-auto border rounded">
@@ -123,7 +123,16 @@ export default function ResultsTable() {
                 columns={[
                     ...columns,
                     { id: "actions",
-                        cell: ({ row }) => <Button size="sm" onClick={() => { setEditingData(row.original); setIsModalOpen(true); }}>Sửa</Button> }
+                        cell: ({ row }) =>
+                            <div className="flex justify-end">
+                                <Button
+                                    size="sm"
+                                    onClick={() => { setEditingData(row.original); setIsModalOpen(true); }}
+                                >
+                                    Sửa
+                                </Button>
+                            </div>
+                    }
                 ]}
                 data={data}
                 onDelete={handleDelete}
