@@ -173,6 +173,6 @@ export default function LocationsTable() {
             />
                 </div>
             </div>
-        </div>
+</div>
     );
 }

@@ -54,6 +54,7 @@ export default async function handler(req, res) {
         Papa.parse(fileContent, {
             header: true,
             skipEmptyLines: true,
+            dynamicTyping: false,
             complete: async (result) => {
                 try {
                     await dbConnect();
