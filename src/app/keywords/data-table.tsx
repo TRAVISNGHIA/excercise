@@ -68,7 +68,7 @@ export function DataTable<TData, TValue>({
 
     const handleDelete = async () => {
         const selectedRows = table.getSelectedRowModel().rows.map((row) => row.original as any);
-        console.log("Selected rows to delete:", selectedRows); // Debugging
+        console.log("Selected rows to delete:", selectedRows);
         if (selectedRows.length > 0 && onDelete) {
             onDelete(selectedRows);
         } else {

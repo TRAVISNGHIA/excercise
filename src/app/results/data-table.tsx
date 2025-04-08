@@ -69,19 +69,15 @@ export function DataTable<TData, TValue>({
     });
 
     const handleDelete = async () => {
-        const selectedRows = table.getSelectedRowModel().rows.map((row) => (row.original as any)._id);
-        if (selectedRows.length > 0) {
-            try {
-                await axios.delete("http://localhost:3000/api/results", {
-                    data: { ids: selectedRows },
-                });
-                toast.success("Xóa thành công!");
-                if (onDelete) onDelete(selectedRows);
-            } catch (error) {
-                toast.error("Lỗi khi xóa dữ liệu!");
-            }
+        const selectedRows = table.getSelectedRowModel().rows.map((row) => row.original as any);
+        console.log("Selected rows to delete:", selectedRows);
+        if (selectedRows.length > 0 && onDelete) {
+            onDelete(selectedRows);
+        } else {
+            console.warn("No rows selected or onDelete not provided");
         }
     };
+
 
     return (
         <div className="p-4 bg-white rounded-lg shadow">
