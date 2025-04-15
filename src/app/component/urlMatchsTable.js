@@ -75,7 +75,7 @@ export default function UrlMatchTable() {
     const handleFileUpload = async () => {
         if (!csvFile) {
             setFileError(true);
-            fileInputRef.current?.focus(); // đưa con trỏ vào input
+            fileInputRef.current?.focus();
             return;
         }
         const formData = new FormData();

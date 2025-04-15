@@ -71,7 +71,7 @@ export default function KeywordsTable() {
         const file = e.target.files[0];
         if (file && file.type === "text/csv") {
             setCsvFile(file);
-            setFileError(false); // xóa viền đỏ nếu file hợp lệ
+            setFileError(false);
         } else {
             setCsvFile(null);
             setFileError(true);
@@ -81,7 +81,7 @@ export default function KeywordsTable() {
     const handleFileUpload = async () => {
         if (!csvFile) {
             setFileError(true);
-            fileInputRef.current?.focus(); // đưa con trỏ vào input
+            fileInputRef.current?.focus();
             return;
         }
 
