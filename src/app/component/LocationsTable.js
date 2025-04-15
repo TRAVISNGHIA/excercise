@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useRef,useState, useEffect } from "react";
 import axios from "axios";
 import { Button } from "@/components/ui/button";
 import { DataTable } from "@/app/locations/data-table";
@@ -8,11 +8,12 @@ import { columns } from "@/app/locations/columns";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
-import { exportToCSV } from "../../../utils/exportUtils";
 
 export default function LocationsTable() {
     const [csvFile, setCsvFile] = useState(null);
     const [data, setData] = useState([]);
+    const [fileError, setFileError] = useState(false);
+    const fileInputRef = useRef(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [editingData, setEditingData] = useState({});
     const API_URL = "https://excercise-duu9.onrender.com/api/locations";
@@ -76,14 +77,19 @@ export default function LocationsTable() {
         const file = e.target.files[0];
         if (file && file.type === "text/csv") {
             setCsvFile(file);
+            setFileError(false); // xóa viền đỏ nếu file hợp lệ
         } else {
-            toast.error("Vui lòng chọn file CSV!");
+            setCsvFile(null);
+            setFileError(true);
         }
     };
 
     const handleFileUpload = async () => {
-        if (!csvFile) return toast.error("Vui lòng chọn file CSV trước!");
-
+        if (!csvFile) {
+            setFileError(true);
+            fileInputRef.current?.focus(); // đưa con trỏ vào input
+            return;
+        }
         const formData = new FormData();
         formData.append("csvFile", csvFile);
         formData.append("type", "location");
@@ -100,16 +106,18 @@ export default function LocationsTable() {
     };
     return (
         <div className="p-4 border rounded-lg">
-            <div className="flex gap-2 mb-4">
-                <input
-                    type="file"
-                    accept=".csv"
-                    onChange={handleFileChange}
-                    className="px-4 py-1 rounded"
-                />
-                <Button onClick={handleFileUpload}>Import CSV</Button>
-            </div>
-            <div className="flex justify-between mb-4">
+            <div className="flex justify-between items-center gap-4 mb-4">
+                <div className="flex gap-2">
+                    <input
+                        ref={fileInputRef}
+                        type="file"
+                        accept=".csv"
+                        onChange={handleFileChange}
+                        className={`px-4 py-1 rounded border ${fileError ? "border-red-500" : "border-gray-300"}`}
+                    />
+                    <Button onClick={handleFileUpload}>Import CSV</Button>
+                </div>
+
                 <Dialog
                     open={isModalOpen}
                     onOpenChange={(open) => {
@@ -119,7 +127,7 @@ export default function LocationsTable() {
                 >
                     <DialogTrigger asChild>
                         <Button onClick={() => { setEditingData({}); setIsModalOpen(true); }}>
-                            Thêm mới
+                            add new
                         </Button>
                     </DialogTrigger>
                     <DialogContent>
@@ -141,11 +149,6 @@ export default function LocationsTable() {
                 </Dialog>
             </div>
 
-            <div className="flex gap-2 mb-4">
-                <button onClick={() => exportToCSV(data)} className="bg-black text-white px-4 py-1 rounded">
-                    Xuất CSV
-                </button>
-            </div>
             <div className="overflow-x-auto">
                 <div className="max-h-[500px] overflow-y-auto border rounded">
             <DataTable

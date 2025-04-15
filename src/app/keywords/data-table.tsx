@@ -12,13 +12,8 @@ import {
     useReactTable,
 } from "@tanstack/react-table";
 
-import {
-    NavigationMenu,
-    NavigationMenuItem,
-    NavigationMenuLink,
-    NavigationMenuList,
-} from "@/components/ui/navigation-menu"
-
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { usePathname, useRouter } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -30,6 +25,7 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
+import {exportToCSV} from "../../../utils/exportUtils";
 
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[];
@@ -44,6 +40,8 @@ export function DataTable<TData, TValue>({
     const [sorting, setSorting] = React.useState<SortingState>([]);
     const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
     const [rowSelection, setRowSelection] = React.useState({});
+    const router = useRouter();
+    const pathname = usePathname();
 
     const table = useReactTable({
         data,
@@ -77,32 +75,51 @@ export function DataTable<TData, TValue>({
     };
 
     return (
-        <div className="p-4 bg-white rounded-lg shadow">
-            <NavigationMenu>
-                <NavigationMenuList>
-                    <NavigationMenuItem>
-                            <NavigationMenuLink href="/">Keywords</NavigationMenuLink>
-                    </NavigationMenuItem>
-                    <NavigationMenuItem>
-                            <NavigationMenuLink href="/locations">Locations</NavigationMenuLink>
-                    </NavigationMenuItem>
-                    <NavigationMenuItem>
-                            <NavigationMenuLink href="/results">Data Results</NavigationMenuLink>
-                    </NavigationMenuItem>
-                    <NavigationMenuItem>
-                            <NavigationMenuLink href="/resultLogs">Data Logs</NavigationMenuLink>
-                    </NavigationMenuItem>
-                    <NavigationMenuItem>
-                            <NavigationMenuLink href="/urlMatchs">URL Matchs</NavigationMenuLink>
-                    </NavigationMenuItem>
-                </NavigationMenuList>
-            </NavigationMenu>
-
+        <div className="p-4  rounded-lg shadow">
+            <Tabs className="mb-4">
+                <TabsList>
+                    <TabsTrigger
+                        value="keywords"
+                        className={pathname === "/" ? "bg-black text-white" : ""}
+                        onClick={() => router.push("/")}
+                    >
+                        Keywords
+                    </TabsTrigger>
+                    <TabsTrigger
+                        value="locations"
+                        className={pathname === "/locations" ? "bg-black text-white" : ""}
+                        onClick={() => router.push("/locations")}
+                    >
+                        Locations
+                    </TabsTrigger>
+                    <TabsTrigger
+                        value="results"
+                        className={pathname === "/results" ? "bg-black text-white" : ""}
+                        onClick={() => router.push("/results")}
+                    >
+                       Results
+                    </TabsTrigger>
+                    <TabsTrigger
+                        value="logs"
+                        className={pathname === "/resultLogs" ? "bg-black text-white" : ""}
+                        onClick={() => router.push("/resultLogs")}
+                    >
+                       Logs
+                    </TabsTrigger>
+                    <TabsTrigger
+                        value="urls"
+                        className={pathname === "/urlMatchs" ? "bg-black text-white" : ""}
+                        onClick={() => router.push("/urlMatchs")}
+                    >
+                        URL Matchs
+                    </TabsTrigger>
+                </TabsList>
+            </Tabs>
 
             <div className="flex items-center justify-between py-4 gap-4">
                 <div className="flex gap-2">
                     <Input
-                        placeholder="Lọc theo từ khóa..."
+                        placeholder="Filter by keyword..."
                         value={(table.getColumn("key")?.getFilterValue() as string) ?? ""}
                         onChange={(event) => table.getColumn("key")?.setFilterValue(event.target.value)}
                         className="max-w-xs"
@@ -114,8 +131,8 @@ export function DataTable<TData, TValue>({
                     </Button>
                 )}
             </div>
-            <div className="rounded-md border overflow-hidden">
-                <Table>
+            <div className="rounded-md border overflow-x-auto">
+            <Table>
                     <TableHeader>
                         {table.getHeaderGroups().map((headerGroup) => (
                             <TableRow key={headerGroup.id}>
@@ -152,6 +169,11 @@ export function DataTable<TData, TValue>({
                         )}
                     </TableBody>
                 </Table>
+            </div>
+            <div className="bottom-4">
+                <button onClick={() => exportToCSV(data)} className="bg-black text-white px-4 py-1 rounded shadow-md">
+                    Export CSV
+                </button>
             </div>
         </div>
     );
