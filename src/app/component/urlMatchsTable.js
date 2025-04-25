@@ -115,7 +115,7 @@ export default function UrlMatchTable() {
                 >
                     <DialogTrigger asChild>
                         <Button onClick={() => { setEditingData({}); setIsModalOpen(true); }}>
-                            add new
+                            add new data
                         </Button>
                     </DialogTrigger>
                     <DialogContent>
@@ -149,7 +149,7 @@ export default function UrlMatchTable() {
                                 size="sm"
                                 onClick={() => { setEditingData(row.original); setIsModalOpen(true); }}
                             >
-                                Sửa
+                                edit data
                             </Button>
                         </div>
                     }

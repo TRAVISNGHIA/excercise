@@ -124,7 +124,7 @@ export default function KeywordsTable() {
                 >
                     <DialogTrigger asChild>
                         <Button onClick={() => { setEditingData({}); setIsModalOpen(true); }}>
-                            add new
+                            add new data
                         </Button>
                     </DialogTrigger>
                     <DialogContent>
@@ -158,7 +158,7 @@ export default function KeywordsTable() {
                                 size="sm"
                                 onClick={() => { setEditingData(row.original); setIsModalOpen(true); }}
                             >
-                                Sửa
+                                edit data
                             </Button>
                         </div>
                     }

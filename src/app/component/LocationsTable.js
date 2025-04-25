@@ -127,7 +127,7 @@ export default function LocationsTable() {
                 >
                     <DialogTrigger asChild>
                         <Button onClick={() => { setEditingData({}); setIsModalOpen(true); }}>
-                            add new
+                            add new data
                         </Button>
                     </DialogTrigger>
                     <DialogContent>
@@ -162,7 +162,7 @@ export default function LocationsTable() {
                                     size="sm"
                                     onClick={() => { setEditingData(row.original); setIsModalOpen(true); }}
                                 >
-                                    Sửa
+                                    edit data
                                 </Button>
                             </div>
                         ),

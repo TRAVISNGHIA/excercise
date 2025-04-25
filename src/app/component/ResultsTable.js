@@ -116,7 +116,7 @@ export default function ResultsTable() {
                 >
                     <DialogTrigger asChild>
                         <Button onClick={() => { setEditingData({}); setIsModalOpen(true); }}>
-                            add new
+                            add new data
                         </Button>
                     </DialogTrigger>
                     <DialogContent>
@@ -150,7 +150,7 @@ export default function ResultsTable() {
                                     size="sm"
                                     onClick={() => { setEditingData(row.original); setIsModalOpen(true); }}
                                 >
-                                    Sửa
+                                    edit data
                                 </Button>
                             </div>
                     }
